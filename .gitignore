@@ -6,3 +6,6 @@ dist/
 __pycache__/
 .vscode/
 .idea/
+.chrome-robot/
+.puente.log
+.vite_dev.log
