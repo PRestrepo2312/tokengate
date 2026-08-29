@@ -90,3 +90,12 @@ main.grafo { flex: 1; display: flex; flex-direction: column; padding: 18px 32px 
 .grafo-cab .cerrar { font: inherit; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
 .grafo-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
 .grafo-scroll svg { display: block; min-width: 1100px; width: 100%; height: auto; }
+
+/* Conocimiento (público) */
+main.conocimiento { flex: 1; display: flex; flex-direction: column; padding: 18px 32px 40px; gap: 16px; }
+.ninos { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px; }
+.nino { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 8px 8px 14px; }
+.nino svg { display: block; width: 100%; height: auto; }
+.nino .resumen { margin: 6px 12px 0; font-size: 14px; }
+.globales { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+@media (max-width: 500px) { .ninos { grid-template-columns: 1fr; } }
