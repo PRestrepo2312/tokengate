@@ -41,6 +41,8 @@ button.llamar { font: inherit; font-size: 22px; font-weight: 700; padding: 18px 
 button.llamar.activo { background: transparent; color: var(--rojo); border-color: var(--rojo); }
 button.llamar:focus-visible { outline: 3px solid var(--ambar); outline-offset: 3px; }
 .error { color: var(--rojo); font-family: Consolas, monospace; font-size: 14px; max-width: 70ch; text-align: center; }
+.despertar { display: flex; gap: 10px; align-items: center; color: var(--ink2); font-size: 15px; cursor: pointer; }
+.despertar input { width: 18px; height: 18px; accent-color: var(--verde); }
 .transcript { width: min(900px, 100%); display: flex; flex-direction: column; gap: 10px; font-size: 22px; line-height: 1.35; }
 .linea { display: flex; gap: 14px; padding: 10px 14px; border-radius: 10px; background: var(--panel); }
 .linea.assistant { border-left: 4px solid var(--azul); }

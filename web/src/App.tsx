@@ -81,21 +81,63 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const alternar = async () => {
+  const iniciarLlamada = async () => {
     setError(null);
     if (!vapiRef.current || !ASSISTANT_ID) {
       setError("Faltan VITE_VAPI_PUBLIC_KEY o VITE_VAPI_ASSISTANT_ID en web/.env.local");
       return;
     }
-    if (enLlamada) vapiRef.current.stop();
-    else {
-      try {
-        await vapiRef.current.start(ASSISTANT_ID);
-      } catch (e) {
-        setError(String((e as any)?.message ?? e));
-      }
+    try {
+      await vapiRef.current.start(ASSISTANT_ID);
+    } catch (e) {
+      setError(String((e as any)?.message ?? e));
     }
   };
+
+  const alternar = async () => {
+    if (enLlamada) vapiRef.current?.stop();
+    else await iniciarLlamada();
+  };
+
+  // ---- Palabra de activación: "hola robot" (Web Speech API del navegador, Chrome/Edge) ----
+  // En espera, la página escucha sola; al oír "hola robot" arranca la llamada de Vapi. Al colgar, vuelve a esperar.
+  const [despierto, setDespierto] = useState(true);
+  const [oyendoClave, setOyendoClave] = useState(false);
+  const recRef = useRef<any>(null);
+  const enLlamadaRef = useRef(false);
+  enLlamadaRef.current = enLlamada;
+  const despiertoRef = useRef(true);
+  despiertoRef.current = despierto;
+
+  useEffect(() => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+    let parado = false;
+    const rec = new SR();
+    rec.lang = "es-CO";
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.onstart = () => setOyendoClave(true);
+    rec.onend = () => {
+      setOyendoClave(false);
+      // Chrome corta el reconocimiento cada cierto tiempo: relanzar mientras no haya llamada.
+      if (!parado && despiertoRef.current && !enLlamadaRef.current) setTimeout(() => { try { rec.start(); } catch { /* ya activo */ } }, 400);
+    };
+    rec.onerror = () => setOyendoClave(false);
+    rec.onresult = (ev: any) => {
+      let texto = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++) texto += ev.results[i][0].transcript + " ";
+      const t = texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+      if (/hola,?\s*(robot|token\s*gate|tokengate|lumi)/.test(t) && !enLlamadaRef.current) {
+        try { rec.stop(); } catch { /* nada */ }
+        iniciarLlamada();
+      }
+    };
+    recRef.current = rec;
+    if (despierto && !enLlamada) { try { rec.start(); } catch { /* nada */ } }
+    return () => { parado = true; try { rec.stop(); } catch { /* nada */ } };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [despierto, enLlamada]);
 
   return (
     <div className="app">
@@ -110,11 +152,15 @@ export default function App() {
           <Cara estado={estado} />
           <div className={`estado e-${estado}`}>{ETIQUETA[estado]}</div>
           <button className={`llamar ${enLlamada ? "activo" : ""}`} onClick={alternar}>
-            {enLlamada ? "Colgar" : "Hablar con el vendedor"}
+            {enLlamada ? "Colgar" : "Hablar con el robot"}
           </button>
+          <label className="despertar">
+            <input type="checkbox" checked={despierto} onChange={(e) => setDespierto(e.target.checked)} />
+            {oyendoClave && !enLlamada ? "Esperando \"Hola robot\"..." : despierto ? "Activar por voz (\"Hola robot\")" : "Activación por voz apagada"}
+          </label>
           {error && <div className="error">{error}</div>}
           <div className="transcript">
-            {lineas.length === 0 && <div className="vacio">Preséntate: "Hola, soy ..., de ..."</div>}
+            {lineas.length === 0 && <div className="vacio">Di "Hola robot" y luego preséntate: "Soy ..., de ..."</div>}
             {lineas.map((l, i) => (
               <div key={i} className={`linea ${l.rol} ${l.final ? "" : "parcial"}`}>
                 <span className="quien">{l.rol === "user" ? "Tú" : "Vendedor"}</span>
