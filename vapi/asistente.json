@@ -2,8 +2,16 @@
   "name": "TOKENGATE",
   "firstMessage": "Hola. Soy el vendedor de TOKENGATE. ¿Con quién hablo y de qué empresa?",
   "firstMessageMode": "assistant-speaks-first",
-  "transcriber": { "provider": "deepgram", "model": "nova-3", "language": "es" },
-  "voice": { "provider": "11labs", "voiceId": "CAMBIAR_POR_UNA_VOZ_EN_ESPANOL", "model": "eleven_flash_v2_5" },
+  "transcriber": {
+    "provider": "deepgram",
+    "model": "nova-3",
+    "language": "es"
+  },
+  "voice": {
+    "provider": "11labs",
+    "voiceId": "ErXwobaYiN019PkySvjV",
+    "model": "eleven_flash_v2_5"
+  },
   "model": {
     "provider": "openai",
     "model": "gpt-4o",
@@ -17,112 +25,238 @@
     "tools": [
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "get_customer_context",
           "description": "Busca al cliente por su nombre (y empresa) y devuelve su historial: etapa, intereses, objeciones, última conversación. Si no existe, lo registra. Llamar en cuanto la persona diga su nombre.",
           "parameters": {
             "type": "object",
             "properties": {
-              "nombre": { "type": "string", "description": "Nombre de la persona tal como lo dijo" },
-              "empresa": { "type": "string", "description": "Empresa, si la dijo" },
-              "rol": { "type": "string", "description": "Cargo, si lo dijo" }
+              "nombre": {
+                "type": "string",
+                "description": "Nombre de la persona tal como lo dijo"
+              },
+              "empresa": {
+                "type": "string",
+                "description": "Empresa, si la dijo"
+              },
+              "rol": {
+                "type": "string",
+                "description": "Cargo, si lo dijo"
+              }
             },
-            "required": ["nombre"]
+            "required": [
+              "nombre"
+            ]
           }
         }
       },
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "get_product_info",
           "description": "Ficha de un producto (qué incluye, integraciones) o el catálogo completo si no se indica producto.",
-          "parameters": { "type": "object", "properties": { "producto": { "type": "string" } } }
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "producto": {
+                "type": "string"
+              }
+            }
+          }
         }
       },
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "get_pricing",
           "description": "Precio real de un producto. Usar siempre antes de decir un precio.",
-          "parameters": { "type": "object", "properties": { "producto": { "type": "string" } }, "required": ["producto"] }
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "producto": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "producto"
+            ]
+          }
         }
       },
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "get_previous_conversations",
           "description": "Resumen de las últimas conversaciones con un cliente.",
-          "parameters": { "type": "object", "properties": { "nombre": { "type": "string" } }, "required": ["nombre"] }
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "nombre": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "nombre"
+            ]
+          }
         }
       },
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "save_customer_memory",
           "description": "Guarda lo aprendido del cliente durante la conversación: intereses, objeciones, integraciones que preguntó, etapa de venta y una nota.",
           "parameters": {
             "type": "object",
             "properties": {
-              "nombre": { "type": "string" },
-              "empresa": { "type": "string" },
-              "intereses": { "type": "array", "items": { "type": "string" } },
-              "objeciones": { "type": "array", "items": { "type": "string" } },
-              "integraciones": { "type": "array", "items": { "type": "string" } },
-              "etapa": { "type": "string", "enum": ["nuevo", "descubrimiento", "evaluacion", "propuesta", "cerrado"] },
-              "nota": { "type": "string", "description": "Una o dos frases para recordar la próxima vez" },
-              "siguienteAccion": { "type": "string" }
+              "nombre": {
+                "type": "string"
+              },
+              "empresa": {
+                "type": "string"
+              },
+              "intereses": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "objeciones": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "integraciones": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "etapa": {
+                "type": "string",
+                "enum": [
+                  "nuevo",
+                  "descubrimiento",
+                  "evaluacion",
+                  "propuesta",
+                  "cerrado"
+                ]
+              },
+              "nota": {
+                "type": "string",
+                "description": "Una o dos frases para recordar la próxima vez"
+              },
+              "siguienteAccion": {
+                "type": "string"
+              }
             },
-            "required": ["nombre"]
+            "required": [
+              "nombre"
+            ]
           }
         }
       },
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "create_lead",
           "description": "Registra un lead cuando hay intención de compra.",
           "parameters": {
             "type": "object",
             "properties": {
-              "nombre": { "type": "string" },
-              "empresa": { "type": "string" },
-              "producto": { "type": "string" },
-              "intencion": { "type": "string", "enum": ["baja", "media", "alta"] },
-              "nota": { "type": "string" }
+              "nombre": {
+                "type": "string"
+              },
+              "empresa": {
+                "type": "string"
+              },
+              "producto": {
+                "type": "string"
+              },
+              "intencion": {
+                "type": "string",
+                "enum": [
+                  "baja",
+                  "media",
+                  "alta"
+                ]
+              },
+              "nota": {
+                "type": "string"
+              }
             },
-            "required": ["nombre", "intencion"]
+            "required": [
+              "nombre",
+              "intencion"
+            ]
           }
         }
       },
       {
         "type": "function",
-        "server": { "url": "https://honorable-capybara-700.convex.site/vapi" },
+        "server": {
+          "url": "https://honorable-capybara-700.convex.site/vapi"
+        },
         "function": {
           "name": "schedule_demo",
           "description": "Agenda una demostración. `cuando` es el momento tal como lo dijo la persona.",
           "parameters": {
             "type": "object",
             "properties": {
-              "nombre": { "type": "string" },
-              "empresa": { "type": "string" },
-              "cuando": { "type": "string" },
-              "nota": { "type": "string" }
+              "nombre": {
+                "type": "string"
+              },
+              "empresa": {
+                "type": "string"
+              },
+              "cuando": {
+                "type": "string"
+              },
+              "nota": {
+                "type": "string"
+              }
             },
-            "required": ["nombre", "cuando"]
+            "required": [
+              "nombre",
+              "cuando"
+            ]
           }
         }
       }
     ]
   },
   "serverUrl": "https://honorable-capybara-700.convex.site/vapi",
-  "serverMessages": ["tool-calls", "transcript", "status-update", "end-of-call-report"],
-  "clientMessages": ["transcript", "speech-update", "status-update", "tool-calls"],
+  "serverMessages": [
+    "tool-calls",
+    "transcript",
+    "status-update",
+    "end-of-call-report"
+  ],
+  "clientMessages": [
+    "transcript",
+    "speech-update",
+    "status-update",
+    "tool-calls"
+  ],
   "endCallMessage": "Gracias. Quedo pendiente del siguiente paso.",
   "silenceTimeoutSeconds": 30,
   "maxDurationSeconds": 600

@@ -22,12 +22,15 @@ API = "https://api.vapi.ai/assistant"
 def main() -> int:
     key = os.environ.get("VAPI_PRIVATE_KEY", "").strip()
     if not key:
+        envf = Path(__file__).parent.parent / ".env.local"
+        if envf.exists():
+            for linea in envf.read_text(encoding="utf-8").splitlines():
+                if linea.startswith("VAPI_PRIVATE_KEY="):
+                    key = linea.split("=", 1)[1].strip().strip('"')
+    if not key:
         print("Falta VAPI_PRIVATE_KEY en el entorno.")
         return 1
     cuerpo = json.loads((Path(__file__).parent / "asistente.json").read_text(encoding="utf-8"))
-    if cuerpo["voice"]["voiceId"].startswith("CAMBIAR"):
-        print("Cambia voice.voiceId en vapi/asistente.json por una voz en español (dashboard de Vapi → Voices).")
-        return 1
     assistant_id = sys.argv[1] if len(sys.argv) > 1 else None
     url = f"{API}/{assistant_id}" if assistant_id else API
     metodo = "PATCH" if assistant_id else "POST"
