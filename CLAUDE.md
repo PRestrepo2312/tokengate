@@ -7,8 +7,9 @@ Andrey (Bedrock + Amplify) y los créditos de partners (Vapi, ElevenLabs, Tavily
 
 ## Qué es
 
-> TOKENGATE es un vendedor físico con memoria: te escucha, te reconoce, consulta precios y productos, agenda la demo y
-> se acuerda de ti la próxima vez.
+> TOKENGATE es tu coach de pitch con memoria: le dices "Hola robot", te escucha pitchear, te da feedback concreto, hace de
+> cliente para que practiques, y la próxima vez recuerda qué vendes, tus versiones anteriores y en qué estabas mejorando.
+> (Pivot del 29-ago 16:20: NO es un vendedor. Prompt del equipo: `vapi/prompt_coach.md`. Guía: `vapi/TOOLS_VAPI.md`.)
 
 Visión original de un compañero: `AI_SALES_ROBOT.md` (ESP32 → WebRTC → OpenAI Realtime → tools → Convex → learning loop).
 Lo que se construye hoy está en `specs/00`: **la misma conversación y la misma memoria, con la voz en tiempo real a cargo de
@@ -24,7 +25,7 @@ FAQ Q05: el código debe escribirse durante las horas del evento. Este repo naci
 |---|---|
 | `AI_SALES_ROBOT.md` | Documento original del compañero. Es la visión; `specs/00` dice qué de eso cabe hoy. |
 | `specs/00_decisiones_y_realidad.md` | **LEER PRIMERO.** Realidad del hardware, dos caminos, qué se construye hoy. |
-| `specs/01_convex_memoria_tools.md` | Tablas, tools por webhook, analizador de conversación, memoria del cliente. |
+| `specs/01_convex_memoria_tools.md` | Tablas, tools por webhook, analizador. OJO: escrito para la versión "vendedor"; las tools vigentes (coach) están en `vapi/TOOLS_VAPI.md` y `convex/tools.ts`. |
 | `specs/02_voz_realtime.md` | Camino B (Vapi en el navegador, hoy) y camino A (ESP-IDF + esp-webrtc, con otro hardware). |
 | `specs/03_robot_cuerpo.md` | El ESP32 como cuerpo: estados escuchando / pensando / hablando. |
 | `specs/04_demo_pitch.md` | Guion de 3 minutos y cronograma de la tarde. |

@@ -71,3 +71,13 @@ según cómo vaya cada demo; ninguno de los dos depende del otro para funcionar.
 
 ESP-IDF, esp-webrtc, WebRTC en el ESP32, VPS/gateway, reconocimiento biométrico, fine-tuning, A/B testing, inventario real,
 integración con un CRM. Todo está en `AI_SALES_ROBOT.md` como fases 3, 4 y 11, y ahí se queda para después del evento.
+
+## 8. Pivot 16:20 — coach de pitch, no vendedor
+
+Pedro aclaró el concepto: TOKENGATE **no vende**; es el **Sales Pitch Coach** (prompt del compañero, `vapi/prompt_coach.md`):
+escucha el pitch, da feedback, hace de cliente para practicar y recuerda a la persona (producto, audiencia, pitches anteriores
+con puntaje, fortalezas, debilidades, feedback, progreso). Tools nuevas: `recordar_usuario`, `guardar_memoria`,
+`guardar_pitch`, `pitches_anteriores` (tabla `pitches` + campos de coach en `customerMemory`). Asistente **TOKENGATE coach**
+(`4f7e4d61-…`, GPT-4o + Deepgram es + alloy) creado aparte porque el `AI Pitch Robot` original lo edita el compañero desde el
+dashboard y el modelo realtime-mini ignoraba las tools. Activación por voz "Hola robot" en la página; BTS-06 como micro y parlante;
+`robot/arrancar.py` lanza todo; el ESP32 sigue la conversación por `robot/puente.py`.

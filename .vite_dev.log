@@ -483,3 +483,122 @@ Visit https://react.dev/link/error-boundaries to learn more about error boundari
 [2m3:33:30 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
 [2m3:33:35 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
 [2m3:33:38 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m3:35:30 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:42:10 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:42:26 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:42:35 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:42:56 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended due to ejection: Meeting has ended
+[2m3:44:00 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:44:52 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:45:42 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended due to ejection: Meeting has ended
+[2m3:45:42 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mvapi error {"type":"daily-error","error":{"message":{"type":"ejected","msg":"Meeting has ended"},"action":"error","errorMsg":"Meeting has ended","error":"[Circular]","callClientId":"17880362910280.37264838963204105"},"timestamp":"2026-08-29T20:45:42.644Z"}
+[2m3:45:43 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Objects are not valid as a React child (found: object with keys {type, msg, details}). If you meant to render a collection of children, use an array instead.
+[39m > throwOnInvalidObjectTypeImpl node_modules/react-dom/cjs/react-dom-client.development.js:6099:12
+ > throwOnInvalidObjectType node_modules/react-dom/cjs/react-dom-client.development.js:6113:10
+ > reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7058:10
+ > node_modules/react-dom/cjs/react-dom-client.development.js:7098:32
+ > reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9701:12
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12049:12
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+
+[2m3:45:43 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <div> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m3:45:58 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:46:19 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended due to ejection: Meeting has ended
+[2m3:46:19 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mvapi error {"type":"daily-error","error":{"message":{"type":"ejected","msg":"Meeting has ended"},"action":"error","errorMsg":"Meeting has ended","error":"[Circular]","callClientId":"17880363571170.3251896003744388"},"timestamp":"2026-08-29T20:46:19.704Z"}
+[2m3:46:19 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Objects are not valid as a React child (found: object with keys {type, msg, details}). If you meant to render a collection of children, use an array instead.
+[39m > throwOnInvalidObjectTypeImpl node_modules/react-dom/cjs/react-dom-client.development.js:6099:12
+ > throwOnInvalidObjectType node_modules/react-dom/cjs/react-dom-client.development.js:6113:10
+ > reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7058:10
+ > node_modules/react-dom/cjs/react-dom-client.development.js:7098:32
+ > reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9701:12
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12049:12
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+
+[2m3:46:19 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <div> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m3:59:50 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m4:04:55 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended in error: Failed to fetch
+[2m4:05:01 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m4:08:56 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m4:12:10 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m4:12:13 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended due to ejection: Meeting has ended
+[2m4:12:13 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mvapi error {"type":"daily-error","error":{"message":{"type":"ejected","msg":"Meeting has ended"},"action":"error","errorMsg":"Meeting has ended","error":"[Circular]","callClientId":"17880379177690.12290346305938071"},"timestamp":"2026-08-29T21:12:13.064Z"}
+[2m4:12:13 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Objects are not valid as a React child (found: object with keys {type, msg, details}). If you meant to render a collection of children, use an array instead.
+[39m > throwOnInvalidObjectTypeImpl node_modules/react-dom/cjs/react-dom-client.development.js:6099:12
+ > throwOnInvalidObjectType node_modules/react-dom/cjs/react-dom-client.development.js:6113:10
+ > reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7058:10
+ > node_modules/react-dom/cjs/react-dom-client.development.js:7098:32
+ > reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9701:12
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12049:12
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+
+[2m4:12:13 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <div> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m4:12:26 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m4:13:19 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended due to ejection: Meeting has ended
+[2m4:13:19 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mvapi error {"type":"daily-error","error":{"message":{"type":"ejected","msg":"Meeting has ended"},"action":"error","errorMsg":"Meeting has ended","error":"[Circular]","callClientId":"17880379446010.6036877938297522"},"timestamp":"2026-08-29T21:13:19.450Z"}
+[2m4:13:19 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Objects are not valid as a React child (found: object with keys {type, msg, details}). If you meant to render a collection of children, use an array instead.
+[39m > throwOnInvalidObjectTypeImpl node_modules/react-dom/cjs/react-dom-client.development.js:6099:12
+ > throwOnInvalidObjectType node_modules/react-dom/cjs/react-dom-client.development.js:6113:10
+ > reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7058:10
+ > node_modules/react-dom/cjs/react-dom-client.development.js:7098:32
+ > reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9701:12
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12049:12
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+
+[2m4:13:19 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <div> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m4:13:58 p. m.[22m [36m[1m[vite][22m[39m [32m.env.local changed, restarting server...[39m
+[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:8:64). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.[39m
+[2m4:13:59 p. m.[22m [36m[1m[vite][22m[39m server restarted.
+[2m4:15:02 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m4:15:44 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMeeting ended due to ejection: Meeting has ended
+[2m4:15:44 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mvapi error {"type":"daily-error","error":{"message":{"type":"ejected","msg":"Meeting has ended"},"action":"error","errorMsg":"Meeting has ended","error":"[Circular]","callClientId":"17880380988700.8449473294634948"},"timestamp":"2026-08-29T21:15:44.462Z"}
+[2m4:15:44 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Objects are not valid as a React child (found: object with keys {type, msg, details}). If you meant to render a collection of children, use an array instead.
+[39m > throwOnInvalidObjectTypeImpl node_modules/react-dom/cjs/react-dom-client.development.js:6099:12
+ > throwOnInvalidObjectType node_modules/react-dom/cjs/react-dom-client.development.js:6113:10
+ > reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7058:10
+ > node_modules/react-dom/cjs/react-dom-client.development.js:7098:32
+ > reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9701:12
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12049:12
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+
+[2m4:15:44 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <div> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m4:25:02 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m4:25:29 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m4:25:30 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m4:25:31 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
