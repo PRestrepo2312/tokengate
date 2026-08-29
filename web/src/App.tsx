@@ -174,6 +174,8 @@ export default function App() {
   // En espera, la página escucha sola; al oír "hola robot" arranca la llamada de Vapi. Al colgar, vuelve a esperar.
   const [despierto, setDespierto] = useState(true);
   const [oyendoClave, setOyendoClave] = useState(false);
+  const [oido, setOido] = useState("");          // diagnóstico: lo último que oyó el reconocimiento
+  const [errorClave, setErrorClave] = useState("");
   const recRef = useRef<any>(null);
   const enLlamadaRef = useRef(false);
   enLlamadaRef.current = enLlamada;
@@ -188,18 +190,20 @@ export default function App() {
     rec.lang = "es-CO";
     rec.continuous = true;
     rec.interimResults = true;
-    rec.onstart = () => setOyendoClave(true);
+    rec.onstart = () => { setOyendoClave(true); setErrorClave(""); };
     rec.onend = () => {
       setOyendoClave(false);
       // Chrome corta el reconocimiento cada cierto tiempo: relanzar mientras no haya llamada.
       if (!parado && despiertoRef.current && !enLlamadaRef.current) setTimeout(() => { try { rec.start(); } catch { /* ya activo */ } }, 400);
     };
-    rec.onerror = () => setOyendoClave(false);
+    rec.onerror = (ev: any) => { setOyendoClave(false); setErrorClave(String(ev?.error ?? "error")); console.warn("palabra clave:", ev?.error); };
     rec.onresult = (ev: any) => {
       let texto = "";
       for (let i = ev.resultIndex; i < ev.results.length; i++) texto += ev.results[i][0].transcript + " ";
       const t = texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-      if (/hola,?\s*(robot|token\s*pirin|tokenpirin|token\s*gate|tokengate|token|toquen|lumi)/.test(t) && !enLlamadaRef.current) {
+      setOido(t.trim().slice(-70));
+      // "hola" + algo que empiece por tok/toc/toq (token, toquen, tocken, tokempirin...), robot o lumi
+      if (/hola,?\s*(robot|lumi|to[ckq]\w*)/.test(t) && !enLlamadaRef.current) {
         try { rec.stop(); } catch { /* nada */ }
         iniciarLlamada();
       }
@@ -234,6 +238,7 @@ export default function App() {
             <input type="checkbox" checked={despierto} onChange={(e) => setDespierto(e.target.checked)} />
             {oyendoClave && !enLlamada ? "Esperando \"Hola Tokenpirin\"..." : despierto ? "Activar por voz (\"Hola Tokenpirin\")" : "Activación por voz apagada"}
           </label>
+          <div className="oido">{errorClave ? `Micrófono: ${errorClave}` : oido ? `Oí: "${oido}"` : oyendoClave ? "Escuchando..." : ""}</div>
           {error && <div className="error">{error}</div>}
           <div className="transcript">
             {lineas.length === 0 && <div className="vacio">Di "Hola Tokenpirin" y cuéntale cómo te llamas y qué tarea traes</div>}
