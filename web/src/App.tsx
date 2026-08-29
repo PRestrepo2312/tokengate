@@ -47,7 +47,13 @@ export default function App() {
     });
     vapi.on("speech-start", () => cambiar("hablando"));
     vapi.on("speech-end", () => cambiar("escuchando"));
-    vapi.on("error", (e: unknown) => setError(String((e as any)?.message ?? e)));
+    vapi.on("error", (e: any) => {
+      const texto = typeof e === "string" ? e : e?.error?.message ?? e?.message ?? e?.errorMsg ?? JSON.stringify(e).slice(0, 300);
+      console.warn("vapi error", e);
+      // Avisos benignos al colgar (meeting ended / ejected) no se muestran.
+      if (/ended|ejected|left/i.test(texto)) return;
+      setError(texto);
+    });
     vapi.on("message", (m: any) => {
       if (m?.type === "transcript" && m.transcript) {
         const rol: "user" | "assistant" = m.role === "assistant" ? "assistant" : "user";
