@@ -7,9 +7,10 @@ Andrey (Bedrock + Amplify) y los créditos de partners (Vapi, ElevenLabs, Tavily
 
 ## Qué es
 
-> TOKENGATE es tu coach de pitch con memoria: le dices "Hola robot", te escucha pitchear, te da feedback concreto, hace de
-> cliente para que practiques, y la próxima vez recuerda qué vendes, tus versiones anteriores y en qué estabas mejorando.
-> (Pivot del 29-ago 16:20: NO es un vendedor. Prompt del equipo: `vapi/prompt_coach.md`. Guía: `vapi/TOOLS_VAPI.md`.)
+> TOKENGATE (Token) es un compañero de tareas para niños: le dices "Hola Token", le cuentas tu tarea o tu duda, te guía con
+> pistas sin hacerla por ti, investiga lo que no sabe, y la próxima vez recuerda tu nombre, en qué tema ibas y qué te costaba.
+> (Pivot del 29-ago 17:25. Prompt: `vapi/prompt_tutor.md`. Voz: Azure es-CO-SalomeNeural. Tools: recordar_usuario,
+> guardar_memoria, investigar. Antes fue coach de pitch (`vapi/prompt_coach.md`) y vendedor.)
 
 Visión original de un compañero: `AI_SALES_ROBOT.md` (ESP32 → WebRTC → OpenAI Realtime → tools → Convex → learning loop).
 Lo que se construye hoy está en `specs/00`: **la misma conversación y la misma memoria, con la voz en tiempo real a cargo de

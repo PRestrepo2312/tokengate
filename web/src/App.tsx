@@ -206,7 +206,7 @@ export default function App() {
     <div className="app">
       <header>
         <div className="marca">TOKENGATE</div>
-        <div className="sub">tu coach de pitch, con memoria</div>
+        <div className="sub">tu compañero de tareas, con memoria</div>
         <div className="teclas">P: panel · G: cómo pensó · Esc: robot</div>
       </header>
 
@@ -218,15 +218,15 @@ export default function App() {
           <div className={`estado e-${estado}`}>{ETIQUETA[estado]}</div>
           {razon && <div className="razon">{razon}</div>}
           <button className={`llamar ${enLlamada ? "activo" : ""}`} onClick={alternar}>
-            {enLlamada ? "Colgar" : "Hablar con el robot"}
+            {enLlamada ? "Terminar" : "Hablar con Token"}
           </button>
           <label className="despertar">
             <input type="checkbox" checked={despierto} onChange={(e) => setDespierto(e.target.checked)} />
-            {oyendoClave && !enLlamada ? "Esperando \"Hola robot\"..." : despierto ? "Activar por voz (\"Hola robot\")" : "Activación por voz apagada"}
+            {oyendoClave && !enLlamada ? "Esperando \"Hola Token\"..." : despierto ? "Activar por voz (\"Hola Token\")" : "Activación por voz apagada"}
           </label>
           {error && <div className="error">{error}</div>}
           <div className="transcript">
-            {lineas.length === 0 && <div className="vacio">Di "Hola robot" y luego preséntate: "Soy ..., de ..."</div>}
+            {lineas.length === 0 && <div className="vacio">Di "Hola Token" y cuéntale cómo te llamas y qué tarea traes</div>}
             {lineas.map((l, i) => (
               <div key={i} className={`linea ${l.rol} ${l.final ? "" : "parcial"}`}>
                 <span className="quien">{l.rol === "user" ? "Tú" : "Vendedor"}</span>
@@ -238,7 +238,7 @@ export default function App() {
       ) : (
         <main className="panel">
           <section>
-            <h2>Personas y su pitch</h2>
+            <h2>Niños y lo que están aprendiendo</h2>
             <div className="tarjetas">
               {clientes.map((c) => (
                 <article key={c._id} className="cliente">
@@ -247,7 +247,7 @@ export default function App() {
                     {c.empresa && <span> · {c.empresa}</span>}
                     <span className={`etapa ${c.etapa}`}>{c.etapa}</span>
                   </div>
-                  {c.producto && <p className="resumen">Vende {c.producto}{c.audiencia ? ` a ${c.audiencia}` : ""}.</p>}
+                  {c.producto && <p className="resumen">Tema: {c.producto}{c.audiencia ? ` · ${c.audiencia}` : ""}.</p>}
                   {c.resumen && <p className="resumen">{c.resumen}</p>}
                   <div className="chips">
                     {c.fortalezas.map((x: string) => (
@@ -260,7 +260,7 @@ export default function App() {
                   {c.pitches.length > 0 && (
                     <div className="siguiente">
                       <span>
-                        {c.pitches.length} versión{c.pitches.length === 1 ? "" : "es"} del pitch ·{" "}
+                        {c.pitches.length} trabajo{c.pitches.length === 1 ? "" : "s"} guardado{c.pitches.length === 1 ? "" : "s"} ·{" "}
                         {c.pitches.map((p: any) => (p.puntaje != null ? `v${p.version}: ${p.puntaje}/10` : `v${p.version}`)).join(" → ")}
                       </span>
                       {c.progreso && <span>Progreso: {c.progreso}</span>}
@@ -271,7 +271,7 @@ export default function App() {
             </div>
           </section>
           <section className="lateral">
-            <h2>Lo que el coach aprendió</h2>
+            <h2>Lo que Token ha visto</h2>
             {insights.length === 0 && <div className="vacio">Todavía sin conversaciones cerradas.</div>}
             {insights.map((i) => (
               <div key={i._id} className="insight">

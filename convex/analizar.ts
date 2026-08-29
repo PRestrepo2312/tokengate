@@ -7,15 +7,14 @@ import { unir } from "./util";
 // Learning loop del COACH: al terminar cada sesión, Claude (Bedrock) extrae qué vende la persona, a quién, fortalezas,
 // debilidades, el feedback que se le dio, el pitch tal como lo dijo (si lo presentó) y un resumen para la próxima vez.
 
-const SYSTEM = `Analizas la transcripción de una sesión de coaching de pitch en español entre el coach (assistant) y la
-persona que practica (user). Extrae solo lo que está en el texto; no inventes.
-producto: qué vende la persona (2-8 palabras). audiencia: a quién. problema: qué problema resuelve. diferencial: qué la distingue.
-objetivo: qué quiere lograr con el pitch. fortalezas / debilidades: 2-4 palabras cada una, sobre CÓMO pitchea (claridad,
-estructura, duración, llamado a la acción, naturalidad...). feedback: las 1-3 recomendaciones concretas que el coach dio.
-pitch: el pitch tal como lo dijo la persona (la mejor versión, texto literal o casi), o cadena vacía si no presentó ninguno.
-puntaje: 0-10 del pitch presentado (0 si no hubo). progreso: una frase comparando con lo anterior si hay contexto, o vacía.
-resumen: dos frases que el coach pueda decir al reconocer a la persona la próxima vez ("La última vez trabajamos X; habíamos
-visto que Y"). Responde solo el JSON.`;
+const SYSTEM = `Analizas la transcripción de una sesión entre Token (assistant), un robot que acompaña a niños con sus tareas, y
+un niño o niña (user). Extrae solo lo que está en el texto; no inventes.
+producto: el tema que trabajaron (2-6 palabras, p. ej. "fracciones con distinto denominador"). audiencia: edad o grado si se
+dijo. problema: lo que más le costó. diferencial: lo que le gusta (para ejemplos futuros). objetivo: qué quería lograr (la tarea,
+un examen). fortalezas: logros de la sesión (2-4 palabras cada uno). debilidades: dificultades concretas. feedback: las
+explicaciones o trucos que funcionaron (1-3). pitch: cadena vacía. puntaje: 0-10 de cuánto avanzó en la sesión. progreso: una
+frase comparando con lo anterior si hay contexto. resumen: dos frases que Token pueda decir al reconocer al niño la próxima vez
+("La última vez estábamos con X y te costaba Y"). Responde solo el JSON.`;
 
 const SCHEMA = {
   type: "object",

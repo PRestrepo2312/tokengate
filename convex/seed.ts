@@ -1,4 +1,19 @@
 import { mutation } from "./_generated/server";
+
+// npx convex run seed:reiniciar  → borra TODO (personas, memoria, conversaciones, mensajes, trabajos, insights). Sin vuelta atrás.
+export const reiniciar = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const tablas = ["messages", "conversations", "pitches", "customerMemory", "leads", "demos", "salesInsights", "customers", "products"] as const;
+    const borrados: Record<string, number> = {};
+    for (const t of tablas) {
+      const filas = await ctx.db.query(t as any).collect();
+      for (const f of filas) await ctx.db.delete(f._id);
+      borrados[t] = filas.length;
+    }
+    return borrados;
+  },
+});
 import { normalizar } from "./util";
 
 // npx convex run seed:todo  → una persona precargada (Juan, de Acme) con memoria del coach y un pitch anterior,

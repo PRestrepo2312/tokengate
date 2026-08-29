@@ -70,7 +70,7 @@ async function recordar_usuario(ctx: Ctx, a: Args, callId?: string): Promise<str
   if (conv && conv.customerId !== c._id) await ctx.db.patch(conv._id, { customerId: c._id });
 
   const quien = `${c.nombre}${c.empresa ? `, de ${c.empresa}` : ""}`;
-  if (nuevo) return `Persona nueva: ${quien}. Es su primera sesión: no hay pitch anterior. Pregunta qué vende, a quién y qué quiere lograr.`;
+  if (nuevo) return `Persona nueva: ${quien}. Es su primera vez: no hay historial. Pregunta qué está estudiando y qué necesita hoy.`;
 
   const m = await memoriaDe(ctx, c._id);
   const pitches = await ctx.db
@@ -78,16 +78,16 @@ async function recordar_usuario(ctx: Ctx, a: Args, callId?: string): Promise<str
     .withIndex("by_customer", (q) => q.eq("customerId", c._id))
     .collect();
   const ultimo = pitches.sort((x, y) => y.creado - x.creado)[0];
-  const partes = [`${quien}. Sesión número ${(m?.sesiones ?? pitches.length) + 1}.`];
+  const partes = [`${quien}. Es su visita número ${(m?.sesiones ?? pitches.length) + 1}.`];
   if (m?.resumen) partes.push(m.resumen);
-  if (m?.producto) partes.push(`Vende: ${m.producto}${m.audiencia ? ` a ${m.audiencia}` : ""}.`);
-  if (m?.problema) partes.push(`Problema que resuelve: ${m.problema}.`);
-  if (m?.objetivo) partes.push(`Objetivo del pitch: ${m.objetivo}.`);
-  if (m?.fortalezas?.length) partes.push(`Fortalezas: ${lista(m.fortalezas)}.`);
-  if (m?.debilidades?.length) partes.push(`A mejorar: ${lista(m.debilidades)}.`);
-  if (m?.feedback?.length) partes.push(`Último feedback: ${m.feedback[m.feedback.length - 1]}.`);
+  if (m?.producto) partes.push(`Tema: ${m.producto}${m.audiencia ? ` (${m.audiencia})` : ""}.`);
+  if (m?.problema) partes.push(`Lo que más le cuesta: ${m.problema}.`);
+  if (m?.objetivo) partes.push(`Meta: ${m.objetivo}.`);
+  if (m?.fortalezas?.length) partes.push(`Le va bien en: ${lista(m.fortalezas)}.`);
+  if (m?.debilidades?.length) partes.push(`Le cuesta: ${lista(m.debilidades)}.`);
+  if (m?.feedback?.length) partes.push(`Lo último que funcionó: ${m.feedback[m.feedback.length - 1]}.`);
   if (m?.progreso) partes.push(`Progreso: ${m.progreso}.`);
-  if (ultimo) partes.push(`Último pitch (versión ${ultimo.version}${ultimo.puntaje != null ? `, ${ultimo.puntaje} sobre 10` : ""}): "${ultimo.texto.slice(0, 220)}".`);
+  if (ultimo) partes.push(`Último trabajo guardado (${ultimo.version}): "${ultimo.texto.slice(0, 200)}".`);
   if (c.ultimaVez) {
     const dias = Math.round((Date.now() - c.ultimaVez) / 86400000);
     partes.push(dias <= 0 ? "Hablamos hoy mismo." : `Última sesión hace ${dias} día${dias === 1 ? "" : "s"}.`);

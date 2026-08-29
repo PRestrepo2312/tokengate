@@ -67,7 +67,7 @@ export default function Grafo({ onCerrar }: { onCerrar: () => void }) {
   return (
     <main className="grafo">
       <div className="grafo-cab">
-        <h2>Cómo pensó el coach{conv?.cliente ? ` con ${conv.cliente}` : ""}</h2>
+        <h2>Cómo pensó Token{conv?.cliente ? ` con ${conv.cliente}` : ""}</h2>
         <span className="teclas">G o Esc: volver</span>
         <button className="cerrar" onClick={onCerrar}>Volver</button>
       </div>
@@ -77,8 +77,8 @@ export default function Grafo({ onCerrar }: { onCerrar: () => void }) {
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Grafo de la conversación: persona, coach, herramientas y memoria">
             {/* carriles */}
             {[
-              ["PERSONA", carril.user, "#4fd18b"],
-              ["COACH", carril.assistant, "#4f8cff"],
+              ["NIÑO", carril.user, "#4fd18b"],
+              ["TOKEN", carril.assistant, "#4f8cff"],
               ["HERRAMIENTAS", carril.tool, "#9d7bff"],
             ].map(([nombre, y, col]) => (
               <g key={String(nombre)}>
@@ -118,16 +118,16 @@ export default function Grafo({ onCerrar }: { onCerrar: () => void }) {
               {cliente ? (
                 <>
                   <text x={der + 60} y={172} fill="#eef1f6" fontSize={18} fontWeight={700}>{corta(cliente.nombre, 18)}</text>
-                  {cliente.producto && <text x={der + 60} y={196} fill="#aab3c5" fontSize={12}>{corta(`Vende ${cliente.producto}`, 34)}</text>}
-                  <text x={der + 60} y={230} fill="#4fd18b" fontSize={12} fontFamily="Consolas, monospace">FORTALEZAS</text>
+                  {cliente.producto && <text x={der + 60} y={196} fill="#aab3c5" fontSize={12}>{corta(`Tema: ${cliente.producto}`, 34)}</text>}
+                  <text x={der + 60} y={230} fill="#4fd18b" fontSize={12} fontFamily="Consolas, monospace">LE VA BIEN</text>
                   {cliente.fortalezas.slice(0, 3).map((f: string, i: number) => (
                     <text key={"f" + i} x={der + 60} y={250 + i * 18} fill="#eef1f6" fontSize={12}>{corta(f, 32)}</text>
                   ))}
-                  <text x={der + 60} y={320} fill="#ff5c5c" fontSize={12} fontFamily="Consolas, monospace">A MEJORAR</text>
+                  <text x={der + 60} y={320} fill="#ff5c5c" fontSize={12} fontFamily="Consolas, monospace">LE CUESTA</text>
                   {cliente.debilidades.slice(0, 3).map((f: string, i: number) => (
                     <text key={"d" + i} x={der + 60} y={340 + i * 18} fill="#eef1f6" fontSize={12}>{corta(f, 32)}</text>
                   ))}
-                  <text x={der + 60} y={410} fill="#ffb547" fontSize={12} fontFamily="Consolas, monospace">PITCH</text>
+                  <text x={der + 60} y={410} fill="#ffb547" fontSize={12} fontFamily="Consolas, monospace">TRABAJOS</text>
                   {cliente.pitches.slice(-4).map((p: any, i: number) => (
                     <g key={"p" + i}>
                       <rect x={der + 60 + i * 52} y={425} width={44} height={44} rx={8} fill={p.puntaje != null ? `hsl(${(p.puntaje / 10) * 120}, 70%, 45%)` : "#262c3a"} />
