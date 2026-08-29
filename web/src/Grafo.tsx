@@ -67,7 +67,7 @@ export default function Grafo({ onCerrar }: { onCerrar: () => void }) {
   return (
     <main className="grafo">
       <div className="grafo-cab">
-        <h2>Cómo pensó Token{conv?.cliente ? ` con ${conv.cliente}` : ""}</h2>
+        <h2>Cómo pensó Tokenpirin{conv?.cliente ? ` con ${conv.cliente}` : ""}</h2>
         <span className="teclas">G o Esc: volver</span>
         <button className="cerrar" onClick={onCerrar}>Volver</button>
       </div>
@@ -78,7 +78,7 @@ export default function Grafo({ onCerrar }: { onCerrar: () => void }) {
             {/* carriles */}
             {[
               ["NIÑO", carril.user, "#4fd18b"],
-              ["TOKEN", carril.assistant, "#4f8cff"],
+              ["TOKENPIRIN", carril.assistant, "#4f8cff"],
               ["HERRAMIENTAS", carril.tool, "#9d7bff"],
             ].map(([nombre, y, col]) => (
               <g key={String(nombre)}>

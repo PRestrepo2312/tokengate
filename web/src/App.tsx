@@ -62,7 +62,7 @@ export default function App() {
     });
     vapi.on("call-end", () => {
       setEnLlamada(false);
-      cambiar("dormido", "Di \"Hola Token\" para despertarme");
+      cambiar("dormido", "Di \"Hola Tokenpirin\" para despertarme");
     });
     vapi.on("speech-start", () => {
       habla.current.coachHablando = true;
@@ -130,9 +130,9 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Al abrir la página el robot está dormido hasta oír "Hola Token".
+  // Al abrir la página el robot está dormido hasta oír "Hola Tokenpirin".
   useEffect(() => {
-    cambiar("dormido", "Di \"Hola Token\" para despertarme");
+    cambiar("dormido", "Di \"Hola Tokenpirin\" para despertarme");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -199,7 +199,7 @@ export default function App() {
       let texto = "";
       for (let i = ev.resultIndex; i < ev.results.length; i++) texto += ev.results[i][0].transcript + " ";
       const t = texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-      if (/hola,?\s*(robot|token\s*gate|tokengate|token|toquen|lumi)/.test(t) && !enLlamadaRef.current) {
+      if (/hola,?\s*(robot|token\s*pirin|tokenpirin|token\s*gate|tokengate|token|toquen|lumi)/.test(t) && !enLlamadaRef.current) {
         try { rec.stop(); } catch { /* nada */ }
         iniciarLlamada();
       }
@@ -213,7 +213,7 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <div className="marca">TOKENGATE</div>
+        <div className="marca">TOKENPIRIN</div>
         <div className="sub">tu compañero de tareas, con memoria</div>
         <div className="teclas">P: panel · G: cómo pensó · C: conocimiento · Esc: robot</div>
       </header>
@@ -228,15 +228,15 @@ export default function App() {
           <div className={`estado e-${estado}`}>{ETIQUETA[estado]}</div>
           {razon && <div className="razon">{razon}</div>}
           <button className={`llamar ${enLlamada ? "activo" : ""}`} onClick={alternar}>
-            {enLlamada ? "Terminar" : "Hablar con Token"}
+            {enLlamada ? "Terminar" : "Hablar con Tokenpirin"}
           </button>
           <label className="despertar">
             <input type="checkbox" checked={despierto} onChange={(e) => setDespierto(e.target.checked)} />
-            {oyendoClave && !enLlamada ? "Esperando \"Hola Token\"..." : despierto ? "Activar por voz (\"Hola Token\")" : "Activación por voz apagada"}
+            {oyendoClave && !enLlamada ? "Esperando \"Hola Tokenpirin\"..." : despierto ? "Activar por voz (\"Hola Tokenpirin\")" : "Activación por voz apagada"}
           </label>
           {error && <div className="error">{error}</div>}
           <div className="transcript">
-            {lineas.length === 0 && <div className="vacio">Di "Hola Token" y cuéntale cómo te llamas y qué tarea traes</div>}
+            {lineas.length === 0 && <div className="vacio">Di "Hola Tokenpirin" y cuéntale cómo te llamas y qué tarea traes</div>}
             {lineas.map((l, i) => (
               <div key={i} className={`linea ${l.rol} ${l.final ? "" : "parcial"}`}>
                 <span className="quien">{l.rol === "user" ? "Tú" : "Vendedor"}</span>
@@ -281,7 +281,7 @@ export default function App() {
             </div>
           </section>
           <section className="lateral">
-            <h2>Lo que Token ha visto</h2>
+            <h2>Lo que Tokenpirin ha visto</h2>
             {insights.length === 0 && <div className="vacio">Todavía sin conversaciones cerradas.</div>}
             {insights.map((i) => (
               <div key={i._id} className="insight">

@@ -7,7 +7,7 @@ Andrey (Bedrock + Amplify) y los créditos de partners (Vapi, ElevenLabs, Tavily
 
 ## Qué es
 
-> TOKENGATE (Token) es un compañero de tareas para niños: le dices "Hola Token", le cuentas tu tarea o tu duda, te guía con
+> TOKENGATE, presentado como **Tokenpirin** (`tokenpirin.lupia.click`), es un compañero de tareas para niños: le dices "Hola Token", le cuentas tu tarea o tu duda, te guía con
 > pistas sin hacerla por ti, investiga lo que no sabe, y la próxima vez recuerda tu nombre, en qué tema ibas y qué te costaba.
 > (Pivot del 29-ago 17:25. Prompt: `vapi/prompt_tutor.md`. Voz: Azure es-CO-SalomeNeural. Tools: recordar_usuario,
 > guardar_memoria, investigar. Antes fue coach de pitch (`vapi/prompt_coach.md`) y vendedor.)

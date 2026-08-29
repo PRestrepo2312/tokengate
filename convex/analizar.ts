@@ -7,7 +7,7 @@ import { unir } from "./util";
 // Learning loop del COACH: al terminar cada sesión, Claude (Bedrock) extrae qué vende la persona, a quién, fortalezas,
 // debilidades, el feedback que se le dio, el pitch tal como lo dijo (si lo presentó) y un resumen para la próxima vez.
 
-const SYSTEM = `Analizas la transcripción de una sesión entre Token (assistant), un robot que acompaña a niños con sus tareas, y
+const SYSTEM = `Analizas la transcripción de una sesión entre Tokenpirin (assistant), un robot que acompaña a niños con sus tareas, y
 un niño o niña (user). Extrae solo lo que está en el texto; no inventes.
 producto: el tema que trabajaron (2-6 palabras, p. ej. "fracciones con distinto denominador"). audiencia: edad o grado si se
 dijo. problema: lo que más le costó. diferencial: lo que le gusta (para ejemplos futuros). objetivo: qué quería lograr (la tarea,

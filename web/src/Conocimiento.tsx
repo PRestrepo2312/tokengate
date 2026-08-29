@@ -57,11 +57,11 @@ export default function Conocimiento({ onCerrar }: { onCerrar: () => void }) {
   return (
     <main className="conocimiento">
       <div className="grafo-cab">
-        <h2>Lo que Token sabe de cada niño</h2>
+        <h2>Lo que Tokenpirin sabe de cada niño</h2>
         <span className="teclas">C o Esc: volver · enlace público: #conocimiento</span>
         <button className="cerrar" onClick={onCerrar}>Volver</button>
       </div>
-      {ninos.length === 0 && <div className="vacio">Todavía nadie ha hablado con Token. Di "Hola Token" y cuéntale tu tarea.</div>}
+      {ninos.length === 0 && <div className="vacio">Todavía nadie ha hablado con Tokenpirin. Di "Hola Tokenpirin" y cuéntale tu tarea.</div>}
       <div className="ninos">
         {ninos.map((c: any) => (
           <article key={c._id} className="nino">
