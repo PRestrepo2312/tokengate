@@ -13,7 +13,8 @@ Arduino IDE + core ESP32 + arduino-cli · cuenta AWS de Andrey configurada (Bedr
 |---|---|---|
 | **Vapi** (cada integrante canjea sus $50) | Enlace de canje del evento → cuenta → dashboard. Copiar **Public Key** (para `web/`) y **Private Key** (solo si se crea el asistente por API). | Voz en tiempo real, tools por webhook. |
 | Asistente en Vapi | Dashboard → Assistants → nuevo, con `specs/02` §A. Copiar el **Assistant ID**. | `web/` lo arranca con `vapi.start(ASSISTANT_ID)`. |
-| Proyecto Convex `tokengate` | `npx convex dev --once --configure new --team pedro-restrepo --project tokengate --dev-deployment cloud` (ya ejecutado si existe `.env.local`). | Cerebro y memoria. La URL `https://<deployment>.convex.site` es la del webhook de Vapi. |
+| Proyecto Convex `tokengate` | **Hecho** (29-ago 12:46): deployment `honorable-capybara-700`, esquema desplegado. `CONVEX_URL=https://honorable-capybara-700.convex.cloud`. | Cerebro y memoria. **Webhook de Vapi: `https://honorable-capybara-700.convex.site/vapi`** (cuando exista `convex/http.ts`). |
+| Repo GitHub | **Hecho**: https://github.com/PRestrepo2312/tokengate (privado, autor PRestrepo2312). | Entrega a las 20:00. |
 | Credenciales Bedrock en Convex | `npx convex env set AWS_ACCESS_KEY_ID ...`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION us-east-1`, `LUMI_LLM bedrock` (mismos valores que en LUMI; `aws configure get aws_access_key_id`). | Analizador de conversaciones. |
 | `web/` | `npm create vite@latest web -- --template react-ts && cd web && npm i convex @vapi-ai/web` | Botón de llamada + panel. |
 | Repo remoto | `gh repo create tokengate --private` con la cuenta PRestrepo2312 (activa en `gh`). | Entrega a las 20:00. |
