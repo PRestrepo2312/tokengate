@@ -426,3 +426,60 @@ Visit https://react.dev/link/error-boundaries to learn more about error boundari
 Consider adding an error boundary to your tree to customize error handling behavior.
 Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
 
+[2m3:22:52 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mTypeError[22m: Vapi is not a constructor
+[39m > src/App.tsx:34:17
+    32 |    useEffect(() => {
+    33 |      if (!PUBLIC_KEY) return;
+    34 |      const vapi = new Vapi(PUBLIC_KEY);
+       |                   ^
+    35 |      vapiRef.current = vapi;
+    36 |      vapi.on("call-start", () => {
+ > Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25989:19
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > commitHookEffectListMount node_modules/react-dom/cjs/react-dom-client.development.js:13249:28
+ > commitHookPassiveMountEffects node_modules/react-dom/cjs/react-dom-client.development.js:13336:10
+ > commitPassiveMountOnFiber node_modules/react-dom/cjs/react-dom-client.development.js:15484:12
+ > recursivelyTraversePassiveMountEffects node_modules/react-dom/cjs/react-dom-client.development.js:15439:10
+ > commitPassiveMountOnFiber node_modules/react-dom/cjs/react-dom-client.development.js:15718:10
+ > recursivelyTraversePassiveMountEffects node_modules/react-dom/cjs/react-dom-client.development.js:15439:10
+ > commitPassiveMountOnFiber node_modules/react-dom/cjs/react-dom-client.development.js:15476:10
+
+[2m3:22:52 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <App> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m3:22:52 p. m.[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mTypeError[22m: Vapi is not a constructor
+[39m > src/App.tsx:34:17
+    32 |    useEffect(() => {
+    33 |      if (!PUBLIC_KEY) return;
+    34 |      const vapi = new Vapi(PUBLIC_KEY);
+       |                   ^
+    35 |      vapiRef.current = vapi;
+    36 |      vapi.on("call-start", () => {
+ > Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25989:19
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > commitHookEffectListMount node_modules/react-dom/cjs/react-dom-client.development.js:13249:28
+ > commitHookPassiveMountEffects node_modules/react-dom/cjs/react-dom-client.development.js:13336:10
+ > reconnectPassiveEffects node_modules/react-dom/cjs/react-dom-client.development.js:15832:10
+ > recursivelyTraverseReconnectPassiveEffects node_modules/react-dom/cjs/react-dom-client.development.js:15784:8
+ > reconnectPassiveEffects node_modules/react-dom/cjs/react-dom-client.development.js:15885:10
+ > recursivelyTraverseReconnectPassiveEffects node_modules/react-dom/cjs/react-dom-client.development.js:15784:8
+ > reconnectPassiveEffects node_modules/react-dom/cjs/react-dom-client.development.js:15824:10
+
+[2m3:22:52 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <App> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m3:23:20 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:23:33 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:23:41 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mDevices Error (Cam In Use): NotReadableError: Could not start audio source
+[2m3:23:42 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mDevices Error (Cam In Use): NotReadableError: Could not start audio source
+[2m3:23:44 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:23:48 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:27:30 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22menumerateDevices took exceptionally long to acquire: 1137
+[2m3:27:34 p. m.[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mdaily-js version 0.87.0 is nearing end of support. Please upgrade to a newer version.
+[2m3:33:30 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:33:35 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:33:38 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m

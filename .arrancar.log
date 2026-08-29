@@ -1,0 +1,15 @@
+abriendo el robot en http://localhost:5174/
+arrancando el puente al ESP32...
+listo. Di 'Hola robot' cerca del BTS-06. Ctrl+C para cerrar todo.
+robot en COM5: {"pong":1}
+siguiendo panel:cuerpo cada 300 ms. Ctrl+C para salir.
+16:14:57  idle         → {'e': 'idle', 'g': '', 'c': 0}
+16:15:05  escuchando   → {'e': 'atento', 'g': '', 'c': 0}
+16:15:07  hablando     → {'e': 'hablando', 'g': '', 'c': 0}
+16:15:12  escuchando   → {'e': 'atento', 'g': '', 'c': 0}
+16:15:18  hablando     → {'e': 'hablando', 'g': '', 'c': 0}
+16:15:22  escuchando   → {'e': 'atento', 'g': '', 'c': 0}
+16:15:24  pensando     → {'e': 'confundido', 'g': '', 'c': 0}
+16:15:27  hablando     → {'e': 'hablando', 'g': '', 'c': 0}
+16:15:31  escuchando   → {'e': 'atento', 'g': '', 'c': 0}
+16:15:44  idle         → {'e': 'idle', 'g': '', 'c': 0}

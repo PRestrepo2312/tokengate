@@ -4,30 +4,36 @@ import { internal } from "./_generated/api";
 import { claudeJson } from "./claude";
 import { unir } from "./util";
 
-// Learning loop (specs/01 §3): al terminar cada conversación, Claude (Bedrock) extrae intereses, objeciones, etapa,
-// resultado y siguiente acción; se funden en customerMemory y se recalculan los salesInsights globales.
+// Learning loop del COACH: al terminar cada sesión, Claude (Bedrock) extrae qué vende la persona, a quién, fortalezas,
+// debilidades, el feedback que se le dio, el pitch tal como lo dijo (si lo presentó) y un resumen para la próxima vez.
 
-const SYSTEM = `Analizas la transcripción de una conversación de ventas en español entre un vendedor (assistant) y un cliente
-(user). Extrae solo lo que está en el texto; no inventes.
-intereses: temas o funciones que al cliente le importan (2-4 palabras cada uno). objeciones: lo que frena la compra ("precio",
-"tiempo de implementación"...). integraciones: sistemas que preguntó. etapa: nuevo | descubrimiento | evaluacion | propuesta |
-cerrado. resultado: seguimiento | demo_agendada | perdido | venta. intencion: baja | media | alta. siguienteAccion: una frase
-imperativa corta. resumen: dos frases que el vendedor pueda decir al reconocer al cliente la próxima vez ("La última vez
-hablamos de X y te preocupaba Y"). Responde solo el JSON.`;
+const SYSTEM = `Analizas la transcripción de una sesión de coaching de pitch en español entre el coach (assistant) y la
+persona que practica (user). Extrae solo lo que está en el texto; no inventes.
+producto: qué vende la persona (2-8 palabras). audiencia: a quién. problema: qué problema resuelve. diferencial: qué la distingue.
+objetivo: qué quiere lograr con el pitch. fortalezas / debilidades: 2-4 palabras cada una, sobre CÓMO pitchea (claridad,
+estructura, duración, llamado a la acción, naturalidad...). feedback: las 1-3 recomendaciones concretas que el coach dio.
+pitch: el pitch tal como lo dijo la persona (la mejor versión, texto literal o casi), o cadena vacía si no presentó ninguno.
+puntaje: 0-10 del pitch presentado (0 si no hubo). progreso: una frase comparando con lo anterior si hay contexto, o vacía.
+resumen: dos frases que el coach pueda decir al reconocer a la persona la próxima vez ("La última vez trabajamos X; habíamos
+visto que Y"). Responde solo el JSON.`;
 
 const SCHEMA = {
   type: "object",
   properties: {
-    intereses: { type: "array", items: { type: "string" } },
-    objeciones: { type: "array", items: { type: "string" } },
-    integraciones: { type: "array", items: { type: "string" } },
-    etapa: { type: "string", enum: ["nuevo", "descubrimiento", "evaluacion", "propuesta", "cerrado"] },
-    resultado: { type: "string", enum: ["seguimiento", "demo_agendada", "perdido", "venta"] },
-    intencion: { type: "string", enum: ["baja", "media", "alta"] },
-    siguienteAccion: { type: "string" },
+    producto: { type: "string" },
+    audiencia: { type: "string" },
+    problema: { type: "string" },
+    diferencial: { type: "string" },
+    objetivo: { type: "string" },
+    fortalezas: { type: "array", items: { type: "string" } },
+    debilidades: { type: "array", items: { type: "string" } },
+    feedback: { type: "array", items: { type: "string" } },
+    pitch: { type: "string" },
+    puntaje: { type: "integer" },
+    progreso: { type: "string" },
     resumen: { type: "string" },
   },
-  required: ["intereses", "objeciones", "integraciones", "etapa", "resultado", "intencion", "siguienteAccion", "resumen"],
+  required: ["producto", "audiencia", "problema", "diferencial", "objetivo", "fortalezas", "debilidades", "feedback", "pitch", "puntaje", "progreso", "resumen"],
   additionalProperties: false,
 };
 
@@ -42,91 +48,106 @@ export const datos = internalQuery({
       .collect();
     const texto = ms
       .sort((a, b) => a.t - b.t)
-      .map((m) => (m.rol === "tool" ? `[tool ${m.tool}] ${m.texto}` : `${m.rol === "user" ? "Cliente" : "Vendedor"}: ${m.texto}`))
+      .map((m) => (m.rol === "tool" ? `[tool ${m.tool}] ${m.texto}` : `${m.rol === "user" ? "Persona" : "Coach"}: ${m.texto}`))
       .join("\n");
     const cliente = conv.customerId ? await ctx.db.get(conv.customerId) : null;
-    return { texto, cliente: cliente ? { nombre: cliente.nombre, empresa: cliente.empresa ?? null, etapa: cliente.etapa } : null, resultadoActual: conv.resultado ?? null };
+    const memoria = conv.customerId
+      ? await ctx.db.query("customerMemory").withIndex("by_customer", (q) => q.eq("customerId", conv.customerId!)).first()
+      : null;
+    return {
+      texto,
+      cliente: cliente ? { nombre: cliente.nombre, empresa: cliente.empresa ?? null } : null,
+      memoriaPrevia: memoria
+        ? { producto: memoria.producto ?? null, debilidades: memoria.debilidades ?? [], fortalezas: memoria.fortalezas ?? [], progreso: memoria.progreso ?? null }
+        : null,
+    };
   },
 });
 
 export const aplicar = internalMutation({
   args: {
     conversationId: v.id("conversations"),
-    intereses: v.array(v.string()),
-    objeciones: v.array(v.string()),
-    integraciones: v.array(v.string()),
-    etapa: v.string(),
-    resultado: v.string(),
-    siguienteAccion: v.string(),
+    producto: v.string(),
+    audiencia: v.string(),
+    problema: v.string(),
+    diferencial: v.string(),
+    objetivo: v.string(),
+    fortalezas: v.array(v.string()),
+    debilidades: v.array(v.string()),
+    feedback: v.array(v.string()),
+    pitch: v.string(),
+    puntaje: v.number(),
+    progreso: v.string(),
     resumen: v.string(),
   },
   handler: async (ctx, a) => {
     const conv = await ctx.db.get(a.conversationId);
     if (!conv) return;
-    const resultado = conv.resultado ?? (a.resultado as any); // schedule_demo ya pudo marcar demo_agendada
-    await ctx.db.patch(conv._id, { resultado, resumen: a.resumen || conv.resumen });
-    if (conv.customerId) {
-      const m = await ctx.db
-        .query("customerMemory")
-        .withIndex("by_customer", (q) => q.eq("customerId", conv.customerId!))
-        .first();
-      const datos = {
+    await ctx.db.patch(conv._id, { resultado: conv.resultado ?? "seguimiento", resumen: a.resumen || conv.resumen });
+    if (!conv.customerId) return;
+    const m = await ctx.db
+      .query("customerMemory")
+      .withIndex("by_customer", (q) => q.eq("customerId", conv.customerId!))
+      .first();
+    const datos = {
+      customerId: conv.customerId,
+      intereses: m?.intereses ?? [],
+      objeciones: m?.objeciones ?? [],
+      integraciones: m?.integraciones ?? [],
+      resumen: a.resumen || m?.resumen || "",
+      siguienteAccion: m?.siguienteAccion,
+      actualizado: Date.now(),
+      producto: a.producto || m?.producto,
+      audiencia: a.audiencia || m?.audiencia,
+      problema: a.problema || m?.problema,
+      diferencial: a.diferencial || m?.diferencial,
+      objetivo: a.objetivo || m?.objetivo,
+      fortalezas: unir(m?.fortalezas ?? [], a.fortalezas),
+      debilidades: unir(m?.debilidades ?? [], a.debilidades),
+      feedback: [...(m?.feedback ?? []), ...a.feedback].slice(-8),
+      progreso: a.progreso || m?.progreso,
+      sesiones: (m?.sesiones ?? 0) + 1,
+    };
+    if (m) await ctx.db.patch(m._id, datos);
+    else await ctx.db.insert("customerMemory", datos);
+    if (a.pitch.trim().length >= 20) {
+      const previos = await ctx.db.query("pitches").withIndex("by_customer", (q) => q.eq("customerId", conv.customerId!)).collect();
+      await ctx.db.insert("pitches", {
         customerId: conv.customerId,
-        intereses: unir(m?.intereses ?? [], a.intereses),
-        objeciones: unir(m?.objeciones ?? [], a.objeciones),
-        integraciones: unir(m?.integraciones ?? [], a.integraciones),
-        resumen: a.resumen || m?.resumen || "",
-        siguienteAccion: a.siguienteAccion || m?.siguienteAccion,
-        actualizado: Date.now(),
-      };
-      if (m) await ctx.db.patch(m._id, datos);
-      else await ctx.db.insert("customerMemory", datos);
-      const c = await ctx.db.get(conv.customerId);
-      const orden = ["nuevo", "descubrimiento", "evaluacion", "propuesta", "cerrado"];
-      if (c && orden.indexOf(a.etapa) > orden.indexOf(c.etapa)) await ctx.db.patch(c._id, { etapa: a.etapa as any });
+        texto: a.pitch.trim(),
+        version: previos.length + 1,
+        feedback: a.feedback[0],
+        puntaje: Math.max(0, Math.min(10, Math.round(a.puntaje))),
+        creado: Date.now(),
+      });
     }
     await recalcularInsights(ctx);
   },
 });
 
+// Insights globales: qué debilidades se repiten entre todas las personas, puntaje medio, cuántas sesiones.
 async function recalcularInsights(ctx: any) {
   const memorias = await ctx.db.query("customerMemory").collect();
-  const convs = await ctx.db.query("conversations").collect();
-  const mensajes = await ctx.db.query("messages").collect();
-
+  const pitches = await ctx.db.query("pitches").collect();
   const cuenta = (xs: string[]) => {
     const m = new Map<string, number>();
     for (const x of xs) m.set(x, (m.get(x) ?? 0) + 1);
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1]);
   };
-  const objeciones = cuenta(memorias.flatMap((m: any) => m.objeciones));
-  const productos = cuenta(
-    mensajes
-      .filter((m: any) => m.rol === "tool" && (m.tool === "get_pricing" || m.tool === "get_product_info"))
-      .map((m: any) => {
-        try {
-          return String(JSON.parse(m.args ?? "{}").producto ?? "").toLowerCase();
-        } catch {
-          return "";
-        }
-      })
-      .filter(Boolean),
-  );
-  const cerradas = convs.filter((c: any) => c.fin);
-  const demos = cerradas.filter((c: any) => c.resultado === "demo_agendada").length;
-
+  const deb = cuenta(memorias.flatMap((m: any) => m.debilidades ?? []));
+  const fort = cuenta(memorias.flatMap((m: any) => m.fortalezas ?? []));
+  const conPuntaje = pitches.filter((p: any) => p.puntaje != null);
+  const media = conPuntaje.length ? conPuntaje.reduce((s: number, p: any) => s + p.puntaje, 0) / conPuntaje.length : 0;
   const set = async (clave: string, valor: string, evidencia: number) => {
-    const fila = await ctx.db
-      .query("salesInsights")
-      .withIndex("by_clave", (q: any) => q.eq("clave", clave))
-      .first();
+    const fila = await ctx.db.query("salesInsights").withIndex("by_clave", (q: any) => q.eq("clave", clave)).first();
     const datos = { clave, valor, evidencia, actualizado: Date.now() };
     if (fila) await ctx.db.patch(fila._id, datos);
     else await ctx.db.insert("salesInsights", datos);
   };
-  if (objeciones.length) await set("objecion_frecuente", objeciones[0][0], objeciones[0][1]);
-  if (productos.length) await set("producto_mas_preguntado", productos[0][0], productos[0][1]);
-  if (cerradas.length) await set("tasa_demo", `${Math.round((100 * demos) / cerradas.length)} % de las conversaciones terminan en demo`, cerradas.length);
+  if (deb.length) await set("debilidad_mas_comun", deb[0][0], deb[0][1]);
+  if (fort.length) await set("fortaleza_mas_comun", fort[0][0], fort[0][1]);
+  if (conPuntaje.length) await set("puntaje_medio", `${media.toFixed(1)} sobre 10 en ${conPuntaje.length} pitches`, conPuntaje.length);
+  await set("sesiones", `${memorias.reduce((s: number, m: any) => s + (m.sesiones ?? 0), 0)} sesiones con ${memorias.length} personas`, memorias.length);
 }
 
 export const correr = internalAction({
@@ -135,23 +156,28 @@ export const correr = internalAction({
     const d = await ctx.runQuery(internal.analizar.datos, { conversationId });
     if (!d) return;
     const texto = d.texto.trim().length >= 40 ? d.texto : (transcript ?? "").trim();
-    if (texto.length < 20) return; // conversación vacía: nada que aprender
+    if (texto.length < 20) return;
     try {
       const r = await claudeJson({
         system: SYSTEM,
-        usuario: JSON.stringify({ cliente: d.cliente, transcripcion: texto.slice(0, 12000) }),
+        usuario: JSON.stringify({ persona: d.cliente, memoria_previa: d.memoriaPrevia, transcripcion: texto.slice(0, 12000) }),
         schema: SCHEMA,
-        maxTokens: 600,
+        maxTokens: 900,
         timeoutMs: 25000,
       });
       await ctx.runMutation(internal.analizar.aplicar, {
         conversationId,
-        intereses: (r.intereses ?? []).map(String),
-        objeciones: (r.objeciones ?? []).map(String),
-        integraciones: (r.integraciones ?? []).map(String),
-        etapa: String(r.etapa ?? "descubrimiento"),
-        resultado: String(r.resultado ?? "seguimiento"),
-        siguienteAccion: String(r.siguienteAccion ?? ""),
+        producto: String(r.producto ?? ""),
+        audiencia: String(r.audiencia ?? ""),
+        problema: String(r.problema ?? ""),
+        diferencial: String(r.diferencial ?? ""),
+        objetivo: String(r.objetivo ?? ""),
+        fortalezas: (r.fortalezas ?? []).map(String),
+        debilidades: (r.debilidades ?? []).map(String),
+        feedback: (r.feedback ?? []).map(String),
+        pitch: String(r.pitch ?? ""),
+        puntaje: Number(r.puntaje) || 0,
+        progreso: String(r.progreso ?? ""),
         resumen: String(r.resumen ?? ""),
       });
     } catch (e) {

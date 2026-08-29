@@ -13,8 +13,9 @@ export const clientes = query({
         .query("customerMemory")
         .withIndex("by_customer", (q) => q.eq("customerId", c._id))
         .first();
-      const leads = await ctx.db.query("leads").withIndex("by_customer", (q) => q.eq("customerId", c._id)).collect();
-      const demos = await ctx.db.query("demos").withIndex("by_customer", (q) => q.eq("customerId", c._id)).collect();
+      const pitches = (await ctx.db.query("pitches").withIndex("by_customer", (q) => q.eq("customerId", c._id)).collect()).sort(
+        (a, b) => a.version - b.version,
+      );
       out.push({
         _id: c._id,
         nombre: c.nombre,
@@ -22,13 +23,24 @@ export const clientes = query({
         rol: c.rol ?? null,
         etapa: c.etapa,
         ultimaVez: c.ultimaVez ?? null,
+        // memoria del coach
+        producto: m?.producto ?? null,
+        audiencia: m?.audiencia ?? null,
+        objetivo: m?.objetivo ?? null,
+        fortalezas: m?.fortalezas ?? [],
+        debilidades: m?.debilidades ?? [],
+        feedback: m?.feedback ?? [],
+        progreso: m?.progreso ?? null,
+        sesiones: m?.sesiones ?? 0,
+        resumen: m?.resumen ?? "",
+        siguienteAccion: m?.siguienteAccion ?? null,
+        pitches: pitches.map((p) => ({ version: p.version, puntaje: p.puntaje ?? null, texto: p.texto })),
+        // compatibilidad con la página anterior
         intereses: m?.intereses ?? [],
         objeciones: m?.objeciones ?? [],
         integraciones: m?.integraciones ?? [],
-        resumen: m?.resumen ?? "",
-        siguienteAccion: m?.siguienteAccion ?? null,
-        leads: leads.length,
-        demos: demos.map((d) => d.cuando),
+        leads: 0,
+        demos: [] as string[],
       });
     }
     return out.sort((a, b) => (b.ultimaVez ?? 0) - (a.ultimaVez ?? 0));

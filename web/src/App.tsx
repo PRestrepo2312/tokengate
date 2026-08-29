@@ -149,7 +149,7 @@ export default function App() {
     <div className="app">
       <header>
         <div className="marca">TOKENGATE</div>
-        <div className="sub">un vendedor que se acuerda de ti</div>
+        <div className="sub">tu coach de pitch, con memoria</div>
         <div className="teclas">P: panel · Esc: robot</div>
       </header>
 
@@ -178,7 +178,7 @@ export default function App() {
       ) : (
         <main className="panel">
           <section>
-            <h2>Clientes con memoria</h2>
+            <h2>Personas y su pitch</h2>
             <div className="tarjetas">
               {clientes.map((c) => (
                 <article key={c._id} className="cliente">
@@ -187,22 +187,23 @@ export default function App() {
                     {c.empresa && <span> · {c.empresa}</span>}
                     <span className={`etapa ${c.etapa}`}>{c.etapa}</span>
                   </div>
+                  {c.producto && <p className="resumen">Vende {c.producto}{c.audiencia ? ` a ${c.audiencia}` : ""}.</p>}
                   {c.resumen && <p className="resumen">{c.resumen}</p>}
                   <div className="chips">
-                    {c.intereses.map((x) => (
-                      <span key={"i" + x} className="chip interes">{x}</span>
+                    {c.fortalezas.map((x: string) => (
+                      <span key={"f" + x} className="chip interes">{x}</span>
                     ))}
-                    {c.objeciones.map((x) => (
-                      <span key={"o" + x} className="chip objecion">{x}</span>
-                    ))}
-                    {c.integraciones.map((x) => (
-                      <span key={"g" + x} className="chip integracion">{x}</span>
+                    {c.debilidades.map((x: string) => (
+                      <span key={"d" + x} className="chip objecion">{x}</span>
                     ))}
                   </div>
-                  {(c.demos.length > 0 || c.siguienteAccion) && (
+                  {c.pitches.length > 0 && (
                     <div className="siguiente">
-                      {c.demos.length > 0 && <span>Demo: {c.demos[c.demos.length - 1]}</span>}
-                      {c.siguienteAccion && <span>Siguiente: {c.siguienteAccion}</span>}
+                      <span>
+                        {c.pitches.length} versión{c.pitches.length === 1 ? "" : "es"} del pitch ·{" "}
+                        {c.pitches.map((p: any) => (p.puntaje != null ? `v${p.version}: ${p.puntaje}/10` : `v${p.version}`)).join(" → ")}
+                      </span>
+                      {c.progreso && <span>Progreso: {c.progreso}</span>}
                     </div>
                   )}
                 </article>
@@ -210,7 +211,7 @@ export default function App() {
             </div>
           </section>
           <section className="lateral">
-            <h2>Lo que el vendedor aprendió</h2>
+            <h2>Lo que el coach aprendió</h2>
             {insights.length === 0 && <div className="vacio">Todavía sin conversaciones cerradas.</div>}
             {insights.map((i) => (
               <div key={i._id} className="insight">

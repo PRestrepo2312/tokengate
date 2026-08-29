@@ -31,14 +31,35 @@ export default defineSchema({
     ultimaVez: v.optional(v.number()),
   }).index("by_nombre", ["nombreNorm"]),
 
+  // Memoria del coach sobre cada persona que practica su pitch (specs: Sales Pitch Coach).
   customerMemory: defineTable({
     customerId: v.id("customers"),
-    intereses: v.array(v.string()),
-    objeciones: v.array(v.string()),
-    integraciones: v.array(v.string()),
-    resumen: v.string(), // 2 frases, lo que el vendedor dice al reconocer al cliente
+    intereses: v.array(v.string()), // (heredado) temas que le importan
+    objeciones: v.array(v.string()), // (heredado) objeciones que ha recibido de sus clientes
+    integraciones: v.array(v.string()), // (heredado)
+    resumen: v.string(), // 2 frases que el coach dice al reconocer a la persona: "La última vez trabajamos..."
     siguienteAccion: v.optional(v.string()),
     actualizado: v.number(),
+    producto: v.optional(v.string()), // qué vende
+    audiencia: v.optional(v.string()), // a quién
+    problema: v.optional(v.string()), // qué problema resuelve
+    diferencial: v.optional(v.string()),
+    fortalezas: v.optional(v.array(v.string())),
+    debilidades: v.optional(v.array(v.string())),
+    feedback: v.optional(v.array(v.string())), // recomendaciones dadas
+    objetivo: v.optional(v.string()), // qué quiere lograr con el pitch
+    progreso: v.optional(v.string()), // cómo va sesión a sesión
+    sesiones: v.optional(v.number()),
+  }).index("by_customer", ["customerId"]),
+
+  // Versiones del pitch de cada persona.
+  pitches: defineTable({
+    customerId: v.id("customers"),
+    texto: v.string(),
+    version: v.number(),
+    feedback: v.optional(v.string()),
+    puntaje: v.optional(v.number()), // 0-10 del coach
+    creado: v.number(),
   }).index("by_customer", ["customerId"]),
 
   conversations: defineTable({
