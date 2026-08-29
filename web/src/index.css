@@ -33,6 +33,8 @@ main.robot { flex: 1; display: flex; flex-direction: column; align-items: center
 .cara.hablando .ojo { border-color: #fff; } .cara.hablando .pupila { background: #fff; } .cara.hablando .boca { background: #fff; animation: boca .28s infinite alternate; }
 .cara.anotando .ojo.der { height: 10px; border-color: var(--violeta); } .cara.anotando .pupila, .cara.anotando .boca { background: var(--violeta); }
 .cara.idle .ojo { animation: parpadeo 4.5s infinite; }
+.cara { transition: opacity 1.2s; }
+.cara.dormido { opacity: .35; }
 .cara.dormido .ojo { height: 8px; border-color: var(--dim); } .cara.dormido .pupila { background: var(--dim); opacity: 0; } .cara.dormido .boca { background: var(--dim); width: 50px; }
 .cara.aburrido .ojo { height: 26px; border-color: var(--ambar); } .cara.aburrido .pupila { background: var(--ambar); transform: translateY(8px); } .cara.aburrido .boca { background: var(--ambar); width: 110px; height: 6px; }
 .cara.confundido .ojo.der { height: 30px; } .cara.confundido .ojo { border-color: var(--ambar); } .cara.confundido .pupila { background: var(--ambar); transform: translate(8px, -8px); } .cara.confundido .boca { background: var(--ambar); width: 60px; transform: translateX(-50%) rotate(-8deg); }

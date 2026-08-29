@@ -21,7 +21,7 @@ import serial.tools.list_ports
 
 MAPA = {
     "idle": ("idle", ""),
-    "dormido": ("aburrido", ""),          # esperando "Hola Token": párpados a media asta, cabeza baja
+    "dormido": ("dormido", ""),           # esperando "Hola Token": ojos cerrados, brillo mínimo, cabeza caída; a los 15 s se apaga
     "escuchando": ("atento", ""),
     "pensando": ("confundido", ""),
     "hablando": ("hablando", ""),

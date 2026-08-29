@@ -70,7 +70,7 @@ async function recordar_usuario(ctx: Ctx, a: Args, callId?: string): Promise<str
   if (conv && conv.customerId !== c._id) await ctx.db.patch(conv._id, { customerId: c._id });
 
   const quien = `${c.nombre}${c.empresa ? `, de ${c.empresa}` : ""}`;
-  if (nuevo) return `Persona nueva: ${quien}. Es su primera vez: no hay historial. Pregunta qué está estudiando y qué necesita hoy.`;
+  if (nuevo) return `Persona nueva: ${quien}. Es su primera vez: no hay historial. Preséntate de verdad antes de pedirle la tarea (qué haces, que das pistas y no respuestas, que investigas lo que no sabes y que te acuerdas de él), y luego pregúntale en qué grado está y qué tarea o duda trae hoy.`;
 
   const m = await memoriaDe(ctx, c._id);
   const pitches = await ctx.db
