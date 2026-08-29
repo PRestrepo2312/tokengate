@@ -26,6 +26,9 @@ Se activa diciendo **"Hola robot"** frente a la caja (micro y parlante BTS-06); 
 | `guardar_pitch` | cuando presenta un pitch completo (y si propone una versión mejorada) | `nombre`, `texto`, `feedback?`, `puntaje? 0-10` | "Guardada la versión 2 del pitch." |
 | `guardar_memoria` | cuando aprende algo: producto, audiencia, problema, diferencial, objetivo, fortalezas, debilidades, feedback, progreso, resumen | `nombre` + esos campos (todos opcionales) | "Anotado." |
 | `pitches_anteriores` | si la persona pregunta cómo iba o quiere comparar | `nombre` | "Versión 1 (4/10): … — feedback: … \| Versión 2 (8/10): …" |
+| `investigar` | si la persona pregunta un dato específico (mercado, competidor, empresa, cifra) o el coach quiere verificar una afirmación del pitch | `tema`, `para?` | 2-3 frases con fuente (Tavily). Sin `TAVILY_API_KEY` responde Claude con lo que sabe y lo avisa. |
+
+Para activar la búsqueda real: canjear Tavily (cupón del evento) y `npx convex env set TAVILY_API_KEY tvly-...` en `TOKENGATE/`.
 
 Todas responden frases en español listas para decirse; nunca JSON.
 

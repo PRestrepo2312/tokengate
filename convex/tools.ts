@@ -165,6 +165,24 @@ export const TOOLS: Record<string, (ctx: Ctx, a: Args, callId?: string) => Promi
   get_previous_conversations: pitches_anteriores,
 };
 
+// Registro de una tool ejecutada fuera de este módulo (p. ej. `investigar`, que es una action).
+export const registrar = internalMutation({
+  args: { name: v.string(), args: v.any(), callId: v.optional(v.string()), resultado: v.string() },
+  handler: async (ctx, { name, args, callId, resultado }) => {
+    const conv = await conversacionActiva(ctx, callId);
+    if (!conv) return;
+    await ctx.db.insert("messages", {
+      conversationId: conv._id,
+      rol: "tool",
+      texto: resultado,
+      t: (Date.now() - conv.inicio) / 1000,
+      tool: name,
+      args: JSON.stringify(args ?? {}),
+      resultado,
+    });
+  },
+});
+
 // Punto de entrada único desde el webhook (http.ts). Registra la llamada en `messages`.
 export const ejecutar = internalMutation({
   args: { name: v.string(), args: v.any(), callId: v.optional(v.string()) },

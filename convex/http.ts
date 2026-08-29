@@ -40,7 +40,14 @@ http.route({
               args = {};
             }
           }
-          const result = await ctx.runMutation(internal.tools.ejecutar, { name, args, callId });
+          let result: string;
+          if (name === "investigar") {
+            // Necesita red (Tavily / Claude): corre como action y se registra aparte.
+            result = await ctx.runAction(internal.investigar.buscar, { tema: String(args?.tema ?? args?.pregunta ?? ""), para: args?.para ? String(args.para) : undefined });
+            await ctx.runMutation(internal.tools.registrar, { name, args, callId, resultado: result });
+          } else {
+            result = await ctx.runMutation(internal.tools.ejecutar, { name, args, callId });
+          }
           results.push({ toolCallId: tc?.id, result });
         }
         return json({ results });

@@ -12,6 +12,7 @@ import type * as analizar from "../analizar.js";
 import type * as claude from "../claude.js";
 import type * as conversations from "../conversations.js";
 import type * as http from "../http.js";
+import type * as investigar from "../investigar.js";
 import type * as panel from "../panel.js";
 import type * as seed from "../seed.js";
 import type * as tools from "../tools.js";
@@ -28,6 +29,7 @@ declare const fullApi: ApiFromModules<{
   claude: typeof claude;
   conversations: typeof conversations;
   http: typeof http;
+  investigar: typeof investigar;
   panel: typeof panel;
   seed: typeof seed;
   tools: typeof tools;
