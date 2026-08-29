@@ -9,3 +9,7 @@ robot en COM5: {"pong":1}
 siguiendo panel:cuerpo cada 300 ms. Ctrl+C para salir.
 16:57:37  idle         → {'e': 'idle', 'g': '', 'c': 0}
 16:57:45  dormido      → {'e': 'aburrido', 'g': '', 'c': 0}
+16:58:23  escuchando   → {'e': 'atento', 'g': '', 'c': 0}
+16:58:23  hablando     → {'e': 'hablando', 'g': '', 'c': 0}
+16:58:29  escuchando   → {'e': 'atento', 'g': '', 'c': 0}
+16:58:29  dormido      → {'e': 'aburrido', 'g': '', 'c': 0}

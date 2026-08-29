@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 // @vapi-ai/web se publica en CommonJS; con Vite el default llega a veces como `.default` y a veces como el módulo entero.
 const Vapi: any = (VapiModulo as any).default?.default ?? (VapiModulo as any).default ?? VapiModulo;
 import { api } from "../../convex/_generated/api";
+import Grafo from "./Grafo";
 
 // TOKENGATE — la página del vendedor: botón de llamada (Vapi Web SDK), cara del robot, transcript en vivo y panel de memoria.
 // Las tools las ejecuta Convex por webhook; aquí solo se ve la conversación y se manda el estado del cuerpo.
@@ -25,7 +26,7 @@ export default function App() {
   const [enLlamada, setEnLlamada] = useState(false);
   const [lineas, setLineas] = useState<Linea[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [vista, setVista] = useState<"robot" | "panel">("robot");
+  const [vista, setVista] = useState<"robot" | "panel" | "grafo">("robot");
   const vapiRef = useRef<any>(null);
   const setCuerpo = useMutation(api.panel.setCuerpo);
   const clientes = useQuery(api.panel.clientes) ?? [];
@@ -134,7 +135,9 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
-      if (ev.key === "p" || ev.key === "P") setVista((v) => (v === "robot" ? "panel" : "robot"));
+      if ((ev.target as HTMLElement | null)?.tagName === "INPUT") return;
+      if (ev.key === "p" || ev.key === "P") setVista((v) => (v === "panel" ? "robot" : "panel"));
+      if (ev.key === "g" || ev.key === "G") setVista((v) => (v === "grafo" ? "robot" : "grafo"));
       if (ev.key === "Escape") setVista("robot");
     };
     window.addEventListener("keydown", onKey);
@@ -204,10 +207,12 @@ export default function App() {
       <header>
         <div className="marca">TOKENGATE</div>
         <div className="sub">tu coach de pitch, con memoria</div>
-        <div className="teclas">P: panel · Esc: robot</div>
+        <div className="teclas">P: panel · G: cómo pensó · Esc: robot</div>
       </header>
 
-      {vista === "robot" ? (
+      {vista === "grafo" ? (
+        <Grafo onCerrar={() => setVista("robot")} />
+      ) : vista === "robot" ? (
         <main className="robot">
           <Cara estado={estado} />
           <div className={`estado e-${estado}`}>{ETIQUETA[estado]}</div>
