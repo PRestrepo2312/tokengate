@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import Vapi from "@vapi-ai/web";
+import * as VapiModulo from "@vapi-ai/web";
 import { useMutation, useQuery } from "convex/react";
+
+// @vapi-ai/web se publica en CommonJS; con Vite el default llega a veces como `.default` y a veces como el módulo entero.
+const Vapi: any = (VapiModulo as any).default?.default ?? (VapiModulo as any).default ?? VapiModulo;
 import { api } from "../../convex/_generated/api";
 
 // TOKENGATE — la página del vendedor: botón de llamada (Vapi Web SDK), cara del robot, transcript en vivo y panel de memoria.
@@ -18,7 +21,7 @@ export default function App() {
   const [lineas, setLineas] = useState<Linea[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [vista, setVista] = useState<"robot" | "panel">("robot");
-  const vapiRef = useRef<Vapi | null>(null);
+  const vapiRef = useRef<any>(null);
   const setCuerpo = useMutation(api.panel.setCuerpo);
   const clientes = useQuery(api.panel.clientes) ?? [];
   const insights = useQuery(api.panel.insights) ?? [];
