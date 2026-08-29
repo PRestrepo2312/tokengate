@@ -102,13 +102,13 @@ def main() -> None:
         try:
             with urllib.request.urlopen(url, timeout=20) as r:
                 cuerpo = r.read().decode("utf-8", errors="ignore")
-                if r.status == 200 and "TOKENGATE" in cuerpo:
+                if r.status == 200 and "TOKENPIRIN" in cuerpo:
                     print(f"OK {url}")
                     return
         except Exception as e:  # noqa: BLE001 - propagación de DNS/CDN, reintentar
             print(f"  esperando URL ({e})", flush=True)
         time.sleep(5)
-    sys.exit(f"desplegó pero {url} no responde con TOKENGATE todavía")
+    sys.exit(f"desplegó pero {url} no responde con TOKENPIRIN todavía")
 
 
 if __name__ == "__main__":
