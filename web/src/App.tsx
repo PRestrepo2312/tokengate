@@ -25,6 +25,7 @@ const ASSISTANT_ID = import.meta.env.VITE_VAPI_ASSISTANT_ID as string | undefine
 export default function App() {
   const [estado, setEstado] = useState<Estado>("dormido");
   const [enLlamada, setEnLlamada] = useState(false);
+  const arrancandoRef = useRef(false);   // candado: una sola llamada aunque "hola token" llegue varias veces seguidas
   const [lineas, setLineas] = useState<Linea[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [vista, setVista] = useState<"robot" | "panel" | "grafo" | "conocimiento">(
@@ -56,11 +57,13 @@ export default function App() {
     const vapi = new Vapi(PUBLIC_KEY);
     vapiRef.current = vapi;
     vapi.on("call-start", () => {
+      arrancandoRef.current = false;
       setEnLlamada(true);
       setLineas([]);
       volverAEscuchar();
     });
     vapi.on("call-end", () => {
+      arrancandoRef.current = false;
       setEnLlamada(false);
       cambiar("dormido", "Di \"Hola Tokenpirin\" para despertarme");
     });
@@ -153,14 +156,18 @@ export default function App() {
   }, []);
 
   const iniciarLlamada = async () => {
+    if (arrancandoRef.current || enLlamadaRef.current) return;   // ya hay una llamada arrancando o activa
+    arrancandoRef.current = true;
     setError(null);
     if (!vapiRef.current || !ASSISTANT_ID) {
       setError("Faltan VITE_VAPI_PUBLIC_KEY o VITE_VAPI_ASSISTANT_ID en web/.env.local");
+      arrancandoRef.current = false;
       return;
     }
     try {
       await vapiRef.current.start(ASSISTANT_ID);
     } catch (e) {
+      arrancandoRef.current = false;
       setError(String((e as any)?.message ?? e));
     }
   };
@@ -203,14 +210,26 @@ export default function App() {
       const t = texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
       setOido(t.trim().slice(-70));
       // "hola" + algo que empiece por tok/toc/toq (token, toquen, tocken, tokempirin...), robot o lumi
-      if (/hola,?\s*(robot|lumi|to[ckq]\w*)/.test(t) && !enLlamadaRef.current) {
+      if (/hola,?\s*(robot|lumi|to[ckq]\w*)/.test(t) && !enLlamadaRef.current && !arrancandoRef.current) {
         try { rec.stop(); } catch { /* nada */ }
         iniciarLlamada();
       }
     };
     recRef.current = rec;
-    if (despierto && !enLlamada) { try { rec.start(); } catch { /* nada */ } }
-    return () => { parado = true; try { rec.stop(); } catch { /* nada */ } };
+    // Cerrojo entre pestañas (Web Locks): solo una pestaña de esta página escucha; si hay otra, se avisa en pantalla.
+    const cerrojo: { soltar?: () => void } = {};
+    const arrancar = () => { try { rec.start(); } catch { /* nada */ } };
+    if (despierto && !enLlamada) {
+      const locks = (navigator as any).locks;
+      if (locks?.request) {
+        locks.request("tokenpirin-oido", { ifAvailable: true }, (lock: unknown) => {
+          if (!lock) { setErrorClave("otra pestaña ya está escuchando: cierra la otra"); return; }
+          arrancar();
+          return new Promise<void>((res) => { cerrojo.soltar = res; });
+        });
+      } else arrancar();
+    }
+    return () => { parado = true; try { rec.stop(); } catch { /* nada */ } cerrojo.soltar?.(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [despierto, enLlamada]);
 
