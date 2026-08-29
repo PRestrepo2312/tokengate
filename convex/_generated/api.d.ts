@@ -8,13 +8,31 @@
  * @module
  */
 
+import type * as analizar from "../analizar.js";
+import type * as claude from "../claude.js";
+import type * as conversations from "../conversations.js";
+import type * as http from "../http.js";
+import type * as panel from "../panel.js";
+import type * as seed from "../seed.js";
+import type * as tools from "../tools.js";
+import type * as util from "../util.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  analizar: typeof analizar;
+  claude: typeof claude;
+  conversations: typeof conversations;
+  http: typeof http;
+  panel: typeof panel;
+  seed: typeof seed;
+  tools: typeof tools;
+  util: typeof util;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.
