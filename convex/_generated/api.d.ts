@@ -11,6 +11,7 @@
 import type * as analizar from "../analizar.js";
 import type * as claude from "../claude.js";
 import type * as conversations from "../conversations.js";
+import type * as generar from "../generar.js";
 import type * as http from "../http.js";
 import type * as investigar from "../investigar.js";
 import type * as panel from "../panel.js";
@@ -28,6 +29,7 @@ declare const fullApi: ApiFromModules<{
   analizar: typeof analizar;
   claude: typeof claude;
   conversations: typeof conversations;
+  generar: typeof generar;
   http: typeof http;
   investigar: typeof investigar;
   panel: typeof panel;

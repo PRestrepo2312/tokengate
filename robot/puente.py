@@ -21,10 +21,14 @@ import serial.tools.list_ports
 
 MAPA = {
     "idle": ("idle", ""),
+    "dormido": ("aburrido", ""),          # esperando "Hola Token": párpados a media asta, cabeza baja
     "escuchando": ("atento", ""),
     "pensando": ("confundido", ""),
     "hablando": ("hablando", ""),
     "anotando": ("atento", "asentir"),
+    "aburrido": ("aburrido", "bostezo"),   # > 30 s hablando sin parar
+    "confundido": ("confundido", ""),      # muletillas seguidas
+    "impresionado": ("atento", "asentir"), # una cifra concreta
 }
 
 

@@ -33,6 +33,12 @@ main.robot { flex: 1; display: flex; flex-direction: column; align-items: center
 .cara.hablando .ojo { border-color: #fff; } .cara.hablando .pupila { background: #fff; } .cara.hablando .boca { background: #fff; animation: boca .28s infinite alternate; }
 .cara.anotando .ojo.der { height: 10px; border-color: var(--violeta); } .cara.anotando .pupila, .cara.anotando .boca { background: var(--violeta); }
 .cara.idle .ojo { animation: parpadeo 4.5s infinite; }
+.cara.dormido .ojo { height: 8px; border-color: var(--dim); } .cara.dormido .pupila { background: var(--dim); opacity: 0; } .cara.dormido .boca { background: var(--dim); width: 50px; }
+.cara.aburrido .ojo { height: 26px; border-color: var(--ambar); } .cara.aburrido .pupila { background: var(--ambar); transform: translateY(8px); } .cara.aburrido .boca { background: var(--ambar); width: 110px; height: 6px; }
+.cara.confundido .ojo.der { height: 30px; } .cara.confundido .ojo { border-color: var(--ambar); } .cara.confundido .pupila { background: var(--ambar); transform: translate(8px, -8px); } .cara.confundido .boca { background: var(--ambar); width: 60px; transform: translateX(-50%) rotate(-8deg); }
+.cara.impresionado .ojo { height: 74px; border-color: var(--verde); } .cara.impresionado .pupila { background: var(--verde); transform: scale(1.3); } .cara.impresionado .boca { background: var(--verde); height: 22px; width: 70px; border-radius: 0 0 30px 30px; }
+.e-dormido { color: var(--dim); } .e-aburrido, .e-confundido { color: var(--ambar); } .e-impresionado { color: var(--verde); }
+.razon { color: var(--ink2); font-size: 18px; margin-top: -10px; }
 @keyframes boca { from { height: 8px; } to { height: 34px; } }
 @keyframes parpadeo { 0%, 94%, 100% { height: 64px; } 97% { height: 6px; } }
 .estado { font-size: 34px; font-weight: 700; letter-spacing: .04em; }

@@ -43,7 +43,25 @@ http.route({
           let result: string;
           if (name === "investigar") {
             // Necesita red (Tavily / Claude): corre como action y se registra aparte.
-            result = await ctx.runAction(internal.investigar.buscar, { tema: String(args?.tema ?? args?.pregunta ?? ""), para: args?.para ? String(args.para) : undefined });
+            result = await ctx.runAction(internal.investigar.buscar, {
+              tema: String(args?.tema ?? args?.pregunta ?? ""),
+              tipo: args?.tipo ? String(args.tipo) : undefined,
+              para: args?.para ? String(args.para) : undefined,
+            });
+            await ctx.runMutation(internal.tools.registrar, { name, args, callId, resultado: result });
+          } else if (name === "generar_pitch") {
+            const s = (k: string) => (args?.[k] != null && String(args[k]).trim() ? String(args[k]).trim() : undefined);
+            result = await ctx.runAction(internal.generar.pitch, {
+              nombre: s("nombre") ?? "",
+              empresa: s("empresa"),
+              producto: s("producto") ?? "",
+              audiencia: s("audiencia"),
+              problema: s("problema"),
+              diferencial: s("diferencial"),
+              objetivo: s("objetivo"),
+              estilo: s("estilo"),
+              contexto: s("contexto"),
+            });
             await ctx.runMutation(internal.tools.registrar, { name, args, callId, resultado: result });
           } else {
             result = await ctx.runMutation(internal.tools.ejecutar, { name, args, callId });

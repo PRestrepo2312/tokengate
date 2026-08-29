@@ -69,12 +69,13 @@ export const cuerpo = query({
 });
 
 export const setCuerpo = mutation({
-  args: { estado: v.string() },
-  handler: async (ctx, { estado }) => {
-    const valido = ["idle", "escuchando", "pensando", "hablando", "anotando"].includes(estado) ? estado : "idle";
+  args: { estado: v.string(), razon: v.optional(v.string()) },
+  handler: async (ctx, { estado, razon }) => {
+    const validos = ["idle", "dormido", "escuchando", "pensando", "hablando", "anotando", "aburrido", "confundido", "impresionado"];
+    const valido = validos.includes(estado) ? estado : "idle";
     const f = await ctx.db.query("cuerpo").order("desc").first();
-    if (f) await ctx.db.patch(f._id, { estado: valido as any, t: Date.now() });
-    else await ctx.db.insert("cuerpo", { estado: valido as any, t: Date.now() });
+    if (f) await ctx.db.patch(f._id, { estado: valido as any, razon: razon ?? "", t: Date.now() });
+    else await ctx.db.insert("cuerpo", { estado: valido as any, razon: razon ?? "", t: Date.now() });
     return valido;
   },
 });

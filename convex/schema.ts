@@ -120,11 +120,16 @@ export default defineSchema({
   cuerpo: defineTable({
     estado: v.union(
       v.literal("idle"),
+      v.literal("dormido"), // esperando "Hola Token"
       v.literal("escuchando"),
       v.literal("pensando"),
       v.literal("hablando"),
       v.literal("anotando"),
+      v.literal("aburrido"), // la persona lleva > 30 s hablando sin parar
+      v.literal("confundido"), // muletillas seguidas
+      v.literal("impresionado"), // una cifra concreta
     ),
+    razon: v.optional(v.string()), // por qué (se muestra en pantalla)
     t: v.number(),
   }),
 });

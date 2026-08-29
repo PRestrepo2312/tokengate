@@ -9,14 +9,19 @@ import { api } from "../../convex/_generated/api";
 // TOKENGATE — la página del vendedor: botón de llamada (Vapi Web SDK), cara del robot, transcript en vivo y panel de memoria.
 // Las tools las ejecuta Convex por webhook; aquí solo se ve la conversación y se manda el estado del cuerpo.
 
-type Estado = "idle" | "escuchando" | "pensando" | "hablando" | "anotando";
+type Estado = "idle" | "dormido" | "escuchando" | "pensando" | "hablando" | "anotando" | "aburrido" | "confundido" | "impresionado";
+
+// Señales con fundamento sobre lo que dice la persona (specs/03): nunca se disparan mientras el coach habla.
+const MULETILLAS = /\b(eh|este|o sea|digamos|como que|basicamente|básicamente|tipo|pues|bueno)\b/gi;
+const CIFRA = /\b\d+([.,]\d+)?\s*(%|por ciento|mil|millones|millón|pesos|dólares|dolares|clientes|empresas|usuarios|ventas|minutos|horas|días|dias|años|anos)\b/i;
+const MONOLOGO_S = 30;
 type Linea = { rol: "user" | "assistant"; texto: string; final: boolean };
 
 const PUBLIC_KEY = import.meta.env.VITE_VAPI_PUBLIC_KEY as string | undefined;
 const ASSISTANT_ID = import.meta.env.VITE_VAPI_ASSISTANT_ID as string | undefined;
 
 export default function App() {
-  const [estado, setEstado] = useState<Estado>("idle");
+  const [estado, setEstado] = useState<Estado>("dormido");
   const [enLlamada, setEnLlamada] = useState(false);
   const [lineas, setLineas] = useState<Linea[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -27,9 +32,19 @@ export default function App() {
   const insights = useQuery(api.panel.insights) ?? [];
   const recientes = useQuery(api.conversations.recientes, { n: 6 }) ?? [];
 
-  const cambiar = (e: Estado) => {
+  const [razon, setRazon] = useState("");
+  const cambiar = (e: Estado, porQue = "") => {
     setEstado(e);
-    setCuerpo({ estado: e }).catch(() => {});
+    setRazon(porQue);
+    setCuerpo({ estado: e, razon: porQue }).catch(() => {});
+  };
+
+  // Fundamento de las emociones: cuánto lleva hablando la persona sin que el coach intervenga, muletillas, cifras.
+  const habla = useRef({ inicioUsuario: 0, coachHablando: false, muletillas: 0, ultimoAviso: 0 });
+  const volverAEscuchar = () => {
+    habla.current.inicioUsuario = 0;
+    habla.current.muletillas = 0;
+    cambiar("escuchando");
   };
 
   useEffect(() => {
@@ -39,14 +54,21 @@ export default function App() {
     vapi.on("call-start", () => {
       setEnLlamada(true);
       setLineas([]);
-      cambiar("escuchando");
+      volverAEscuchar();
     });
     vapi.on("call-end", () => {
       setEnLlamada(false);
-      cambiar("idle");
+      cambiar("dormido", "Di \"Hola Token\" para despertarme");
     });
-    vapi.on("speech-start", () => cambiar("hablando"));
-    vapi.on("speech-end", () => cambiar("escuchando"));
+    vapi.on("speech-start", () => {
+      habla.current.coachHablando = true;
+      habla.current.inicioUsuario = 0;
+      cambiar("hablando");
+    });
+    vapi.on("speech-end", () => {
+      habla.current.coachHablando = false;
+      volverAEscuchar();
+    });
     vapi.on("error", (e: any) => {
       const texto = typeof e === "string" ? e : e?.error?.message ?? e?.message ?? e?.errorMsg ?? JSON.stringify(e).slice(0, 300);
       console.warn("vapi error", e);
@@ -65,7 +87,33 @@ export default function App() {
           }
           return [...prev, { rol, texto: m.transcript, final }].slice(-14);
         });
-        if (rol === "user" && final) cambiar("pensando");
+        if (rol === "user" && !habla.current.coachHablando) {
+          const h = habla.current;
+          const ahora = Date.now();
+          if (!h.inicioUsuario) h.inicioUsuario = ahora;
+          const seg = (ahora - h.inicioUsuario) / 1000;
+          if (final) {
+            const texto = String(m.transcript);
+            const nuevas = (texto.match(MULETILLAS) || []).length;
+            h.muletillas += nuevas;
+            if (CIFRA.test(texto)) {
+              h.muletillas = 0;
+              if (ahora - h.ultimoAviso > 4000) { h.ultimoAviso = ahora; cambiar("impresionado", "Una cifra concreta: bien"); }
+              return;
+            }
+            if (h.muletillas >= 3 && ahora - h.ultimoAviso > 6000) {
+              h.ultimoAviso = ahora; h.muletillas = 0;
+              cambiar("confundido", "Tres muletillas seguidas");
+              return;
+            }
+          }
+          if (seg > MONOLOGO_S && ahora - h.ultimoAviso > 15000) {
+            h.ultimoAviso = ahora;
+            cambiar("aburrido", `Llevas ${Math.round(seg)} s hablando sin parar`);
+            return;
+          }
+          if (final) cambiar("pensando");
+        }
       }
       if (m?.type === "tool-calls") {
         cambiar("anotando");
@@ -75,6 +123,12 @@ export default function App() {
     return () => {
       vapi.stop();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Al abrir la página el robot está dormido hasta oír "Hola Token".
+  useEffect(() => {
+    cambiar("dormido", "Di \"Hola Token\" para despertarme");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -134,7 +188,7 @@ export default function App() {
       let texto = "";
       for (let i = ev.resultIndex; i < ev.results.length; i++) texto += ev.results[i][0].transcript + " ";
       const t = texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-      if (/hola,?\s*(robot|token\s*gate|tokengate|lumi)/.test(t) && !enLlamadaRef.current) {
+      if (/hola,?\s*(robot|token\s*gate|tokengate|token|toquen|lumi)/.test(t) && !enLlamadaRef.current) {
         try { rec.stop(); } catch { /* nada */ }
         iniciarLlamada();
       }
@@ -157,6 +211,7 @@ export default function App() {
         <main className="robot">
           <Cara estado={estado} />
           <div className={`estado e-${estado}`}>{ETIQUETA[estado]}</div>
+          {razon && <div className="razon">{razon}</div>}
           <button className={`llamar ${enLlamada ? "activo" : ""}`} onClick={alternar}>
             {enLlamada ? "Colgar" : "Hablar con el robot"}
           </button>
@@ -237,10 +292,14 @@ export default function App() {
 
 const ETIQUETA: Record<Estado, string> = {
   idle: "Pulsa para hablar",
+  dormido: "Dormido",
   escuchando: "Escuchando",
   pensando: "Pensando",
   hablando: "Hablando",
   anotando: "Anotando",
+  aburrido: "Aburrido",
+  confundido: "Confundido",
+  impresionado: "Impresionado",
 };
 
 function Cara({ estado }: { estado: Estado }) {
