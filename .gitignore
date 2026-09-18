@@ -9,3 +9,5 @@ __pycache__/
 .chrome-robot/
 .puente.log
 .vite_dev.log
+.arrancar.log
+*.log
